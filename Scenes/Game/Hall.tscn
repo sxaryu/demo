@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dbrf62j36gjd5"]
+[gd_scene load_steps=5 format=3 uid="uid://clstpskkbf6bs"]
 
 [ext_resource type="Texture2D" uid="uid://dgtin5nb4k03c" path="res://Textures/hall.png" id="1_nhi01"]
-[ext_resource type="Script" path="res://Scripts/hall.gd" id="1_rvgij"]
+[ext_resource type="Script" uid="uid://dq0fxiqfejcuy" path="res://Scripts/Game/hall.gd" id="1_rvgij"]
 [ext_resource type="Texture2D" uid="uid://duwrarq2fkj87" path="res://Textures/stoika.png" id="2_owmlv"]
 [ext_resource type="Texture2D" uid="uid://ctpj5nl7snlsq" path="res://Textures/cashbox.png" id="3_rp0x8"]
 

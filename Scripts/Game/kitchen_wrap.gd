@@ -2,7 +2,7 @@ extends Node2D
 class_name KitchenWrap
 
 # --- Константы ---
-const SCENE_LAVASH := preload("res://Scenes/Lavash.tscn")
+const SCENE_LAVASH := preload("res://Scenes/Game/Lavash.tscn")
 const TEXTURE_SHAWU := preload("res://Textures/shawu.png")
 const TEXTURE_WRAPPED := preload("res://Textures/wrapped_shawu.png")
 

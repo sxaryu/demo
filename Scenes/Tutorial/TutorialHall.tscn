@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://dbrf62j36gjd5"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Texture2D" uid="uid://dgtin5nb4k03c" path="res://Textures/hall.png" id="1_nhi01"]
-[ext_resource type="Script" path="res://Scripts/hall.gd" id="1_rvgij"]
-[ext_resource type="Texture2D" uid="uid://duwrarq2fkj87" path="res://Textures/stoika.png" id="2_owmlv"]
-[ext_resource type="Texture2D" uid="uid://ctpj5nl7snlsq" path="res://Textures/cashbox.png" id="3_rp0x8"]
+[ext_resource type="Texture2D" uid="uid://dgtin5nb4k03c" path="res://Textures/hall.png" id="1"]
+[ext_resource type="Script" path="res://Scripts/Tutorial/tutorial_hall.gd" id="1_rvgij"]
+[ext_resource type="Texture2D" uid="uid://duwrarq2fkj87" path="res://Textures/stoika.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://ctpj5nl7snlsq" path="res://Textures/cashbox.png" id="3"]
+[ext_resource type="PackedScene" uid="uid://tutorial_customer" path="res://Scenes/Tutorial/TutorialCustomer.tscn" id="4]
+[ext_resource type="PackedScene" uid="uid://lavash_scene" path="res://Scenes/Game/Lavash.tscn" id="5"]
 
-[node name="Hall" type="Node2D"]
+[node name="TutorialHall" type="Node2D"]
 script = ExtResource("1_rvgij")
 
 [node name="Background" type="TextureRect" parent="."]
@@ -14,7 +16,7 @@ offset_top = 6.1035156e-05
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
-texture = ExtResource("1_nhi01")
+texture = ExtResource("1")
 metadata/_edit_lock_ = true
 
 [node name="Table" type="Sprite2D" parent="."]
@@ -22,14 +24,19 @@ z_index = 1
 position = Vector2(960.00006, 937)
 rotation = 3.1415927
 scale = Vector2(1, 1.1317829)
-texture = ExtResource("2_owmlv")
+texture = ExtResource("2")
 metadata/_edit_lock_ = true
 
 [node name="Cashbox" type="Sprite2D" parent="."]
 z_index = 1
 position = Vector2(195.00002, 833.00006)
 scale = Vector2(0.7439965, 0.8055048)
-texture = ExtResource("3_rp0x8")
+texture = ExtResource("3")
+
+[node name="ShawuSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(1028, 980)
+
+[node name="CustomerSpawnPoint" type="Marker2D" parent="."]
 
 [node name="MoneyPanel" type="Panel" parent="."]
 z_index = 2
@@ -48,8 +55,3 @@ theme_override_font_sizes/font_size = 32
 text = "0 деняк"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="ShawuSpawnPoint" type="Marker2D" parent="."]
-position = Vector2(1028, 980)
-
-[node name="CustomerSpawnPoint" type="Marker2D" parent="."]

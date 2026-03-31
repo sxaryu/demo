@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var quit_button: Button = $QuitButton
 
-const SCENE_MAIN_MENU := preload("res://Scenes/MainMenu.tscn")
+const SCENE_MAIN_MENU := preload("res://Scenes/Game/MainMenu.tscn")
 
 func _ready() -> void:
 	quit_button.pressed.connect(_on_exit_button_pressed)

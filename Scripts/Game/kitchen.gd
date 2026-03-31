@@ -2,8 +2,8 @@ extends Node2D
 class_name Kitchen
 
 # --- Константы ---
-const SCENE_LAVASH := preload("res://Scenes/Lavash.tscn")
-const SCENE_KITCHEN_WRAP := preload("res://Scenes/KitchenWrap.tscn")
+const SCENE_LAVASH := preload("res://Scenes/Game/Lavash.tscn")
+const SCENE_KITCHEN_WRAP := preload("res://Scenes/Game/KitchenWrap.tscn")
 
 # --- Таймер для сыпания ---
 var pour_timer: Timer = null
@@ -31,6 +31,9 @@ var ghost_sauce: Sprite2D = null
 # --- UI панель веса ---
 @onready var weight_ui: IngredientsWeightUI = $IngredientsWeightUI
 
+# --- Обучение ---
+var tutorial_kitchen: TutorialKitchen = null
+
 
 func _ready():
 	done_button.pressed.connect(_on_done_pressed)
@@ -42,6 +45,29 @@ func _ready():
 	pour_timer.autostart = false
 	pour_timer.timeout.connect(_on_pour_timer)
 	add_child(pour_timer)
+
+	# Запускаем обучение если нужно
+	if Globals.is_tutorial_mode:
+		_start_tutorial()
+
+
+func _start_tutorial() -> void:
+	tutorial_kitchen = TutorialKitchen.new()
+	tutorial_kitchen.tutorial_step_completed.connect(_on_tutorial_step)
+	tutorial_kitchen.tutorial_finished.connect(_on_tutorial_finished)
+	add_child(tutorial_kitchen)
+
+
+func _on_tutorial_step(_step: int) -> void:
+	# Реакция на переход между шагами
+	pass
+
+
+func _on_tutorial_finished() -> void:
+	# Обучение завершено - скрываем оверлей
+	if tutorial_kitchen:
+		tutorial_kitchen.hide_overlay()
+		Globals.is_tutorial_mode = false
 
 # -------- HELPER FUNCTIONS --------
 
@@ -152,6 +178,10 @@ func _on_ingredient_added(type: String, current: int, max_grams: int) -> void:
 	if weight_ui:
 		weight_ui.update_weight(type, current, max_grams)
 
+	# Обучение - сообщаем о добавлении ингредиента
+	if tutorial_kitchen:
+		tutorial_kitchen.on_ingredient_added(type)
+
 func _on_done_pressed():
 	if not current_lavash:
 		print("Сначала создай лаваш")
@@ -203,6 +233,9 @@ func _input(event):
 		if is_sauce_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and current_lavash:
 			if current_lavash.contains_global_point(event.position):
 				current_lavash.paint_sauce(event.position, current_sauce_brush)
+				# Обучение - сообщаем о добавлении соуса
+				if tutorial_kitchen:
+					tutorial_kitchen.on_sauce_added()
 		
 		# НОВОЕ: Логика сыпания ингредиентов при зажатии
 		if is_holding_ingredient() and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):

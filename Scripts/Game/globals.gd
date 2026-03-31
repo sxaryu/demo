@@ -12,6 +12,9 @@ var last_order: Dictionary = {}
 # Новое: вес ингредиентов
 var last_lavash_weights: Dictionary = {}
 
+# Режим туториала
+var is_tutorial_mode: bool = false
+
 func clear_data() -> void:
 	last_lavash_ingredients.clear()
 	last_lavash_sauce.clear()
