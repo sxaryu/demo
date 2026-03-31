@@ -1,18 +1,4 @@
-func _handle_mouse_click(event: InputEventMouseButton, mouse_pos: Vector2) -> void:
-	if event.button_index == MOUSE_BUTTON_LEFT:
-		# --- ИСПРАВЛЕНИЕ: Сначала проверяем упаковку ---
-		if is_packaging_mode:
-			if shawu.contains_global_point(mouse_pos):
-				package_shawu()
-				cancel_package_preview()
-		
-		# Если не упаковка - проверяем перетаскивание
-		elif can_drag() and shawu.contains_global_point(mouse_pos):
-			is_dragging = true
-			drag_offset = shawu.global_position - mouse_pos
-			
-	elif event.button_index == MOUSE_BUTTON_RIGHT:
-		cancel_package_preview()extends Node2D
+extends Node2D
 class_name KitchenWrap
 
 # --- Константы ---
@@ -95,14 +81,14 @@ func _handle_mouse_motion(mouse_pos: Vector2) -> void:
 
 func _handle_mouse_click(event: InputEventMouseButton, mouse_pos: Vector2) -> void:
 	if event.button_index == MOUSE_BUTTON_LEFT:
-		# Начало перетаскивания
-		if can_drag() and shawu.contains_global_point(mouse_pos):
-			is_dragging = true
-			drag_offset = shawu.global_position - mouse_pos
-		# Клик упаковкой
-		elif is_packaging_mode and shawu.contains_global_point(mouse_pos):
+		# СНАЧАЛА проверяем режим упаковки (приоритет!)
+		if is_packaging_mode and shawu.contains_global_point(mouse_pos):
 			package_shawu()
 			cancel_package_preview()
+		# Потом перетаскивание (только если НЕ в режиме упаковки)
+		elif can_drag() and shawu.contains_global_point(mouse_pos):
+			is_dragging = true
+			drag_offset = shawu.global_position - mouse_pos
 			
 	elif event.button_index == MOUSE_BUTTON_RIGHT:
 		cancel_package_preview()
@@ -190,10 +176,13 @@ func _create_ghost(texture: Texture2D, z_idx: int) -> Sprite2D:
 	add_child(sprite)
 	return sprite
 
-func cancel_package_preview():
+func _clear_ghost_package() -> void:
 	if ghost_package:
 		ghost_package.queue_free()
 		ghost_package = null
+
+func cancel_package_preview():
+	_clear_ghost_package()
 	is_packaging_mode = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
@@ -221,11 +210,8 @@ func _finish_packaging():
 		shawu_sprite.texture = TEXTURE_WRAPPED
 	done_button.disabled = false
 	print("Шаурма упакована!")
+	_clear_ghost_package()
 	
-	if ghost_package:
-		ghost_package.queue_free()
-		ghost_package = null
-
 # ---------------- ANIMATION ----------------
 func _animation_done():
 	is_animating = false

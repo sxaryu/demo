@@ -31,7 +31,7 @@ var ingredient_max_weight: Dictionary = {
 
 # --- Константы ---
 const TEXTURE_FRIED := preload("res://Textures/fried_shawu.png")
-const PORTION_GRAMS := 5  # Сколько грамм сыпется за раз
+const PORTION_GRAMS := 15  # Сколько грамм сыпется за раз (было 5)
 
 func _ready() -> void:
 	add_to_group("lavash")
