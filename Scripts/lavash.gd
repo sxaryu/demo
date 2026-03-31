@@ -105,7 +105,14 @@ func add_ingredient_portion(ingredient_texture: Texture2D, global_pos: Vector2, 
 	var portion := Sprite2D.new()
 	portion.texture = ingredient_texture
 	portion.position = to_local(global_pos)
-	portion.scale = Vector2(0.3, 0.3)  # Маленький кусочек
+	
+	# Рандомизация размера (от 0.25 до 0.35)
+	var random_scale = randf_range(0.9, 1.2)
+	portion.scale = Vector2(random_scale, random_scale)
+	
+	# Рандомизация поворота (от -30 до 30 градусов)
+	portion.rotation_degrees = randf_range(-90, 90)
+	
 	portion.modulate = Color(1, 1, 1, 0.8)
 	portion.centered = true
 	portion.z_index = ingredients.size() + 1

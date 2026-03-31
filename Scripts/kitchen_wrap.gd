@@ -1,18 +1,4 @@
-func _handle_mouse_click(event: InputEventMouseButton, mouse_pos: Vector2) -> void:
-	if event.button_index == MOUSE_BUTTON_LEFT:
-		# --- ИСПРАВЛЕНИЕ: Сначала проверяем упаковку ---
-		if is_packaging_mode:
-			if shawu.contains_global_point(mouse_pos):
-				package_shawu()
-				cancel_package_preview()
-		
-		# Если не упаковка - проверяем перетаскивание
-		elif can_drag() and shawu.contains_global_point(mouse_pos):
-			is_dragging = true
-			drag_offset = shawu.global_position - mouse_pos
-			
-	elif event.button_index == MOUSE_BUTTON_RIGHT:
-		cancel_package_preview()extends Node2D
+extends Node2D
 class_name KitchenWrap
 
 # --- Константы ---
@@ -30,7 +16,7 @@ const PACKAGE_HEIGHT := 291.0
 
 # --- Шаурма ---
 var shawu: Lavash = null
-var shawu_sprite: Sprite2D = null # Кэшируем спрайт для быстрого доступа
+var shawu_sprite: Sprite2D = null 
 enum State { RAW, FRIED, PACKAGED }
 var state: State = State.RAW
 
@@ -95,14 +81,21 @@ func _handle_mouse_motion(mouse_pos: Vector2) -> void:
 
 func _handle_mouse_click(event: InputEventMouseButton, mouse_pos: Vector2) -> void:
 	if event.button_index == MOUSE_BUTTON_LEFT:
-		# Начало перетаскивания
-		if can_drag() and shawu.contains_global_point(mouse_pos):
+		# Клик упаковкой (проверяем ПЕРЕД перетаскиванием)
+		if is_packaging_mode and shawu and shawu.contains_global_point(mouse_pos):
+			var success = package_shawu()
+			if success:
+				cancel_package_preview()
+		# Начало перетаскивания (только если НЕ в режиме упаковки)
+		elif can_drag() and shawu and shawu.contains_global_point(mouse_pos):
 			is_dragging = true
 			drag_offset = shawu.global_position - mouse_pos
-		# Клик упаковкой
-		elif is_packaging_mode and shawu.contains_global_point(mouse_pos):
-			package_shawu()
-			cancel_package_preview()
+			
+	elif event.button_index == MOUSE_BUTTON_RIGHT:
+		cancel_package_preview()
+			
+	elif event.button_index == MOUSE_BUTTON_RIGHT:
+		cancel_package_preview()
 			
 	elif event.button_index == MOUSE_BUTTON_RIGHT:
 		cancel_package_preview()
@@ -198,9 +191,18 @@ func cancel_package_preview():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 # ---------------- PACKAGE ----------------
-func package_shawu():
-	if not shawu or state != State.FRIED:
-		return
+func package_shawu() -> bool:
+	if not shawu:
+		return false
+	
+	# Нельзя упаковывать пока шаурма на гриле
+	if is_animating:
+		print("Нельзя упаковывать - шаурма на гриле!")
+		return false
+	
+	if state != State.FRIED:
+		print("Шаурма ещё не готова к упаковке!")
+		return false
 
 	is_packaging_mode = false
 	state = State.PACKAGED
@@ -215,6 +217,8 @@ func package_shawu():
 	tween.tween_property(shawu, "global_position", target_pos, 0.3)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.tween_callback(_finish_packaging)
+	
+	return true
 
 func _finish_packaging():
 	if shawu_sprite:
@@ -225,6 +229,9 @@ func _finish_packaging():
 	if ghost_package:
 		ghost_package.queue_free()
 		ghost_package = null
+	
+	# Возвращаем мышь в нормальный режим после успешной упаковки
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 # ---------------- ANIMATION ----------------
 func _animation_done():

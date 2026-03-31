@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://0ltjwyrslvql"]
+[gd_scene load_steps=20 format=3 uid="uid://0ltjwyrslvql"]
 
 [ext_resource type="Script" uid="uid://bhgbufu8bmx6r" path="res://Scripts/kitchen.gd" id="1_a5466"]
 [ext_resource type="PackedScene" uid="uid://6iplpt7dyms7" path="res://Scenes/IngredientButton.tscn" id="2_6fiwt"]
@@ -16,13 +16,14 @@
 [ext_resource type="Texture2D" uid="uid://bfjis71fpik5p" path="res://Textures/cheese_piece.png" id="13_cheese"]
 [ext_resource type="Texture2D" uid="uid://b3pn8o0dss37o" path="res://Textures/onion_container.png" id="14_onion"]
 [ext_resource type="Script" uid="uid://dmxl8kwbimjgx" path="res://IngredientsWeightUI.gd" id="14_vo3np"]
+[ext_resource type="Texture2D" uid="uid://pfvs8qnliwo4" path="res://Textures/pepper_container.png" id="14_vpw7v"]
+[ext_resource type="Texture2D" uid="uid://bnc68kac21gjc" path="res://Textures/pepper_piece.png" id="15_kte2b"]
 [ext_resource type="Texture2D" uid="uid://cfpd5k4klbu7r" path="res://Textures/onion_piece.png" id="15_onion"]
 
 [node name="Kitchen" type="Node2D"]
 script = ExtResource("1_a5466")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-visible = false
 offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0.972549, 0.9254902, 0.8784314, 1)
@@ -43,9 +44,9 @@ anchors_preset = 0
 [node name="Tomato" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
 offset_left = 1619.0
-offset_top = 40.0
+offset_top = 38.0
 offset_right = 1994.0
-offset_bottom = 370.0
+offset_bottom = 368.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("5_digll")
 ingredient_texture = ExtResource("6_mxqhq")
@@ -53,9 +54,9 @@ ingredient_texture = ExtResource("6_mxqhq")
 [node name="Salad" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
 offset_left = 1619.0
-offset_top = 271.0
+offset_top = 269.0
 offset_right = 1994.0
-offset_bottom = 601.0
+offset_bottom = 599.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("7_57t66")
 ingredient_texture = ExtResource("4_yp2dn")
@@ -72,9 +73,9 @@ ingredient_texture = ExtResource("5_0sqtt")
 
 [node name="Cheese" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
-offset_left = 1340.0
+offset_left = 1350.0
 offset_top = 40.0
-offset_right = 1715.0
+offset_right = 1725.0
 offset_bottom = 370.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("12_cheese")
@@ -82,15 +83,26 @@ ingredient_texture = ExtResource("13_cheese")
 
 [node name="Onion" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
-offset_left = 1340.0
+offset_left = 1350.0
 offset_top = 271.0
-offset_right = 1715.0
+offset_right = 1725.0
 offset_bottom = 601.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("14_onion")
 ingredient_texture = ExtResource("15_onion")
 
+[node name="Pepper" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
+layout_mode = 0
+offset_left = 1350.0
+offset_top = 504.0
+offset_right = 1725.0
+offset_bottom = 834.0
+scale = Vector2(0.75, 0.75)
+texture_normal = ExtResource("14_vpw7v")
+ingredient_texture = ExtResource("15_kte2b")
+
 [node name="IngredientsWeightUI" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 20.0

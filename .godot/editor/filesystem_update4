@@ -1,3 +1,6 @@
-res://Scripts/lavash.gd
-res://Scripts/kitchen_wrap.gd
+res://Scenes/Hall.tscn
 res://Scripts/globals.gd
+res://Scripts/kitchen_wrap.gd
+res://Scripts/lavash.gd
+res://Scenes/Kitchen.tscn
+res://Scenes/KitchenWrap.tscn
