@@ -123,9 +123,7 @@ func _on_delivery_complete() -> void:
 		current_customer = null
 
 	await get_tree().create_timer(1.0).timeout
-	# Проверяем валидность перед сменой сцены
-	if is_instance_valid(self) and is_instance_valid(current_customer):
-		get_tree().change_scene_to_packed(SCENE_THANKS)
+	get_tree().change_scene_to_packed(SCENE_THANKS)
 
 # ---------------- ANIMATION (симметрично появлению) ----------------
 func _animate_customer_exit(customer: Customer) -> void:
