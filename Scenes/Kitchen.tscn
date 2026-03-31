@@ -1,0 +1,127 @@
+[gd_scene load_steps=18 format=3 uid="uid://0ltjwyrslvql"]
+
+[ext_resource type="Script" uid="uid://bhgbufu8bmx6r" path="res://Scripts/kitchen.gd" id="1_a5466"]
+[ext_resource type="PackedScene" uid="uid://6iplpt7dyms7" path="res://Scenes/IngredientButton.tscn" id="2_6fiwt"]
+[ext_resource type="Texture2D" uid="uid://c47qmtnmg80vk" path="res://Textures/chillen_summer_cover.jpg" id="2_th3l3"]
+[ext_resource type="Texture2D" uid="uid://bcp7d4coxhdeh" path="res://Textures/salad_piece.png" id="4_yp2dn"]
+[ext_resource type="Texture2D" uid="uid://du7ecia4j6xy5" path="res://Textures/meat_piece.png" id="5_0sqtt"]
+[ext_resource type="Texture2D" uid="uid://ddp0jmgxm2dkk" path="res://Textures/totmato_container.png" id="5_digll"]
+[ext_resource type="Texture2D" uid="uid://b1xqtlsapgowd" path="res://Textures/tomato_piece.png" id="6_mxqhq"]
+[ext_resource type="Texture2D" uid="uid://d0iawjkvkveix" path="res://Textures/salad_container.png" id="7_57t66"]
+[ext_resource type="Texture2D" uid="uid://c8mvi26su1ny8" path="res://Textures/next.png" id="9_0sqtt"]
+[ext_resource type="Texture2D" uid="uid://cnc0k3ec644id" path="res://Textures/meat_container.png" id="9_mxqhq"]
+[ext_resource type="PackedScene" uid="uid://c0ushf5r3122s" path="res://Scenes/SauceBottle.tscn" id="11_57t66"]
+[ext_resource type="PackedScene" uid="uid://nwn67v8rs2yw" path="res://Scenes/LavashButton.tscn" id="11_digll"]
+[ext_resource type="Texture2D" uid="uid://bb51u4t4baf8a" path="res://Textures/cheese_container.png" id="12_cheese"]
+[ext_resource type="Texture2D" uid="uid://bfjis71fpik5p" path="res://Textures/cheese_piece.png" id="13_cheese"]
+[ext_resource type="Texture2D" uid="uid://b3pn8o0dss37o" path="res://Textures/onion_container.png" id="14_onion"]
+[ext_resource type="Script" uid="uid://dmxl8kwbimjgx" path="res://IngredientsWeightUI.gd" id="14_vo3np"]
+[ext_resource type="Texture2D" uid="uid://cfpd5k4klbu7r" path="res://Textures/onion_piece.png" id="15_onion"]
+
+[node name="Kitchen" type="Node2D"]
+script = ExtResource("1_a5466")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.972549, 0.9254902, 0.8784314, 1)
+
+[node name="Background" type="TextureRect" parent="."]
+modulate = Color(0.18000486, 0.18000486, 0.18000486, 1)
+z_index = -1
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_th3l3")
+
+[node name="WorkArea" type="Node2D" parent="."]
+
+[node name="IngredientPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Tomato" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
+layout_mode = 0
+offset_left = 1619.0
+offset_top = 40.0
+offset_right = 1994.0
+offset_bottom = 370.0
+scale = Vector2(0.75, 0.75)
+texture_normal = ExtResource("5_digll")
+ingredient_texture = ExtResource("6_mxqhq")
+
+[node name="Salad" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
+layout_mode = 0
+offset_left = 1619.0
+offset_top = 271.0
+offset_right = 1994.0
+offset_bottom = 601.0
+scale = Vector2(0.75, 0.75)
+texture_normal = ExtResource("7_57t66")
+ingredient_texture = ExtResource("4_yp2dn")
+
+[node name="Meat" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
+layout_mode = 0
+offset_left = 1619.0
+offset_top = 504.0
+offset_right = 1994.0
+offset_bottom = 834.0
+scale = Vector2(0.75, 0.75)
+texture_normal = ExtResource("9_mxqhq")
+ingredient_texture = ExtResource("5_0sqtt")
+
+[node name="Cheese" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
+layout_mode = 0
+offset_left = 1340.0
+offset_top = 40.0
+offset_right = 1715.0
+offset_bottom = 370.0
+scale = Vector2(0.75, 0.75)
+texture_normal = ExtResource("12_cheese")
+ingredient_texture = ExtResource("13_cheese")
+
+[node name="Onion" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
+layout_mode = 0
+offset_left = 1340.0
+offset_top = 271.0
+offset_right = 1715.0
+offset_bottom = 601.0
+scale = Vector2(0.75, 0.75)
+texture_normal = ExtResource("14_onion")
+ingredient_texture = ExtResource("15_onion")
+
+[node name="IngredientsWeightUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 300.0
+script = ExtResource("14_vo3np")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="IngredientsWeightUI"]
+layout_mode = 0
+offset_left = 280.0
+offset_right = 560.0
+offset_bottom = 280.0
+
+[node name="DoneButton" type="Button" parent="."]
+offset_left = 1821.0
+offset_top = 1009.0
+offset_right = 1996.0
+offset_bottom = 1130.0
+scale = Vector2(0.5, 0.5)
+icon = ExtResource("9_0sqtt")
+flat = true
+
+[node name="LavashButton" parent="." instance=ExtResource("11_digll")]
+offset_left = -48.999977
+offset_top = 1367.0
+offset_right = 326.00003
+offset_bottom = 1763.6942
+
+[node name="SauceBottle" parent="." instance=ExtResource("11_57t66")]
+offset_left = 49.0
+offset_top = 40.0
+offset_right = 200.0
+offset_bottom = 419.65717

@@ -1,0 +1,15 @@
+res://Scenes/UI/OrderPanel.tscn::80dc940c98c990a7c3d49a72e18bcd60::1765910900::res://.godot/exported/133200997/export-269ca365f599a8f0b278c9d13dca7089-OrderPanel.scn
+res://Scenes/Customer.tscn::69f931eccf483d632cdcce30ef7c3cb8::1766276155::res://.godot/exported/133200997/export-d43de876fafddebcb851d92fdaf6a04e-Customer.scn
+res://Scenes/Grill.tscn::eec6d8cac36d50a39914ae66a870b56a::1766265626::res://.godot/exported/133200997/export-0399f449a01aad261c535bbdc00de9ce-Grill.scn
+res://Scenes/Hall.tscn::3abf88a2aba8ed74dbb192def12513ba::1766284980::res://.godot/exported/133200997/export-784d540269cb3ca4f8ac2568aafb2656-Hall.scn
+res://Scenes/Ingredient.tscn::a67484ad99e686284fc76fb64af80e9f::1766077340::res://.godot/exported/133200997/export-dc085c20df1bc66bb8c5687120ad2ce5-Ingredient.scn
+res://Scenes/IngredientButton.tscn::3bcb8965c7066cb01431ae05ee8380b7::1766267322::res://.godot/exported/133200997/export-684e40e1cdc42af8ab0cbc09dca2de26-IngredientButton.scn
+res://Scenes/Kitchen.tscn::06c8f20c02192590c28cbf90d3c5aa9c::1766281362::res://.godot/exported/133200997/export-136c42c39d4f743f9cb4f3a979e4883e-Kitchen.scn
+res://Scenes/KitchenWrap.tscn::07b38d1084e5fd843a41e5c2de40b94c::1766283684::res://.godot/exported/133200997/export-26abe4bf118ea85efa08471e2c1f2bc4-KitchenWrap.scn
+res://Scenes/Lavash.tscn::b666d639181ac63abf273320f9e7581e::1766259911::res://.godot/exported/133200997/export-7507b969da164f83ceb17836efe49d31-Lavash.scn
+res://Scenes/LavashButton.tscn::1ed9850d6bc110355c23a3c7400d91a7::1766004469::res://.godot/exported/133200997/export-639d5f7867d7f69f2629be821ba69d47-LavashButton.scn
+res://Scenes/Main.tscn::be7127f7437830d6cd063cabb637c6d7::1765910898::res://.godot/exported/133200997/export-a8e1520d83f25710dd4e3da8c6f32601-Main.scn
+res://Scenes/MainMenu.tscn::9d762205051f440228feeab964ea3396::1766282294::res://.godot/exported/133200997/export-5d46f2c25b5b7595677274e5845c73b8-MainMenu.scn
+res://Scenes/PackagingButton.tscn::4ee0b9ca68d8187780fbceedab73f5b9::1766270028::res://.godot/exported/133200997/export-969f367fe5f239b74aec08b814ceb797-PackagingButton.scn
+res://Scenes/SauceBottle.tscn::214b6f240f1a9a8fb6cdecb209a4c4fd::1766155053::res://.godot/exported/133200997/export-748c13d8c7eb81a5664208beafa675cc-SauceBottle.scn
+res://Scenes/thanks.tscn::5f72c60452673dff9066592b6bc4e8d4::1766283687::res://.godot/exported/133200997/export-39068b54dc62806a1515700603a54d48-thanks.scn
