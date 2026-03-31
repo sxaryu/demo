@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dit27r3wjirvi"]
 
-[ext_resource type="Script" uid="uid://ci715rdchhrwx" path="res://Scripts/Game/lavash.gd" id="1_a6uqy"]
+[ext_resource type="Script" uid="uid://ci715rdchhrwx" path="res://Scripts/lavash.gd" id="1_a6uqy"]
 [ext_resource type="Texture2D" uid="uid://nuwqvjutu55c" path="res://Textures/lavash.png" id="1_vqtja"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a6uqy"]

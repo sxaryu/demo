@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://pulr85ao6k6m"]
+[gd_scene load_steps=2 format=3 uid="uid://doox7smqlgs1x"]
 
-[ext_resource type="Script" uid="uid://orejltuqdt0i" path="res://Scripts/Game/main_menu.gd" id="1_tt5f1"]
+[ext_resource type="Script" uid="uid://orejltuqdt0i" path="res://Scripts/main_menu.gd" id="1_tt5f1"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -36,7 +36,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 48
 text = "Играть"
 
-[node name="TutorialButton" type="Button" parent="."]
+[node name="QuitButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -47,22 +47,6 @@ offset_left = -229.0
 offset_top = -37.5
 offset_right = 228.0
 offset_bottom = 37.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 48
-text = "Обучение"
-
-[node name="QuitButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -229.0
-offset_top = 50.0
-offset_right = 228.0
-offset_bottom = 125.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 48

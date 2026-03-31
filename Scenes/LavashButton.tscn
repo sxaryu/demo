@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://nwn67v8rs2yw"]
 
 [ext_resource type="Texture2D" uid="uid://h6qwu8psordl" path="res://Textures/lavash_stack.png" id="1_un0o6"]
-[ext_resource type="Script" uid="uid://q50o41fdhx3m" path="res://Scripts/Game/lavash_button.gd" id="2_tq1ww"]
-[ext_resource type="PackedScene" uid="uid://dit27r3wjirvi" path="res://Scenes/Game/Lavash.tscn" id="3_l3ecn"]
+[ext_resource type="Script" uid="uid://q50o41fdhx3m" path="res://Scripts/lavash_button.gd" id="2_tq1ww"]
+[ext_resource type="PackedScene" uid="uid://dit27r3wjirvi" path="res://Scenes/Lavash.tscn" id="3_l3ecn"]
 
 [node name="LavashButton" type="TextureButton"]
 offset_left = -37.999992

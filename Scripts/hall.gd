@@ -1,9 +1,9 @@
 extends Node2D
 
 # --- Константы ---
-const SCENE_THANKS := preload("res://Scenes/Game/thanks.tscn")
-const SCENE_CUSTOMER := preload("res://Scenes/Game/Customer.tscn")
-const SCENE_LAVASH := preload("res://Scenes/Game/Lavash.tscn")
+const SCENE_THANKS := preload("res://Scenes/thanks.tscn")
+const SCENE_CUSTOMER := preload("res://Scenes/Customer.tscn")
+const SCENE_LAVASH := preload("res://Scenes/Lavash.tscn")
 
 const DELIVERY_DISTANCE := 130.0
 const SHAWU_REWARD := 100
