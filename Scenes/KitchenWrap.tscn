@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cg103b6lo0wxo"]
 
-[ext_resource type="Script" uid="uid://ca1klxe4xo6rt" path="res://Scripts/kitchen_wrap.gd" id="1_3y5j7"]
+[ext_resource type="Script" uid="uid://ca1klxe4xo6rt" path="res://Scripts/Scenes/kitchen_wrap.gd" id="1_3y5j7"]
 [ext_resource type="Texture2D" uid="uid://c47qmtnmg80vk" path="res://Textures/chillen_summer_cover.jpg" id="2_shtwf"]
 [ext_resource type="Texture2D" uid="uid://c8mvi26su1ny8" path="res://Textures/next.png" id="3_shtwf"]
 [ext_resource type="PackedScene" uid="uid://ctnqnb0c2xjya" path="res://Scenes/Grill.tscn" id="4_0hpwd"]

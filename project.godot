@@ -17,9 +17,10 @@ boot_splash/show_image=false
 
 [autoload]
 
-Globals="*res://Scripts/globals.gd"
-OrderManager="*res://Scripts/OrderManager.gd"
-Database="*res://Scripts/database.gd"
+Globals="*res://Scripts/Core/globals.gd"
+OrderManager="*res://Scripts/Core/OrderManager.gd"
+Database="*res://Scripts/Core/database.gd"
+Consts="*res://Scripts/Core/consts.gd"
 
 [display]
 
