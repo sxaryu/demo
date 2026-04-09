@@ -3,8 +3,8 @@ class_name KitchenWrap
 
 # --- Preload ---
 const SCENE_LAVASH := preload("res://Scenes/Lavash.tscn")
-const TEXTURE_SHAWU := preload("res://Textures/shawu.png")
-const TEXTURE_WRAPPED := preload("res://Textures/wrapped_shawu.png")
+const TEXTURE_SHAWU := preload("res://Textures/Kitchen/shawu.png")
+const TEXTURE_WRAPPED := preload("res://Textures/Kitchen/wrapped_shawu.png")
 
 # --- Узлы ---
 @onready var work_area: Node2D = $WorkArea
@@ -164,9 +164,11 @@ func _create_ghost(texture: Texture2D) -> Sprite2D:
 	return sprite
 
 func _scale_package(sprite: Sprite2D, texture: Texture2D) -> void:
-	var scale_x := Consts.PACKAGE_WIDTH / texture.get_width()
-	var scale_y := Consts.PACKAGE_HEIGHT / texture.get_height()
-	sprite.scale = Vector2(scale_x, scale_y)
+	var w := float(Consts.PACKAGE_WIDTH)
+	var h := float(Consts.PACKAGE_HEIGHT)
+	var tw := float(texture.get_width())
+	var th := float(texture.get_height())
+	sprite.scale = Vector2(w / tw, h / th)
 
 func cancel_package_preview() -> void:
 	_free_ghost()

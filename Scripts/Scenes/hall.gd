@@ -5,6 +5,7 @@ extends Node2D
 @onready var customer_spawn_point: Node2D = $CustomerSpawnPoint
 @onready var shawu_spawn_point: Node2D = $ShawuSpawnPoint
 @onready var money_counter: Label = $MoneyPanel/MoneyCounter
+@onready var time_label: Label = $TimePanel/TimeLabel
 
 # --- Переменные ---
 var current_customer: Customer
@@ -19,21 +20,59 @@ const SCENE_LAVASH := preload("res://Scenes/Lavash.tscn")
 
 # ---------------- READY ----------------
 func _ready() -> void:
-	money = _parse_money(money_counter.text)
-	_spawn_customer(Globals.last_packed_lavash.is_empty() == false)
+	money = Globals.total_money
+	money_counter.text = str(money) + "₽"
+	_update_time_display()
+	
+	# Проверяем, закончился ли рабочий день
+	if Globals.is_work_day_over():
+		_end_work_day()
+		return
+
+	# Сцена всегда пустая - создаём клиента заново
+	if not Globals.last_packed_lavash.is_empty():
+		# Клиент уже сделал заказ и ждёт готовую шаурму
+		_spawn_customer_stand_still()
+		_spawn_packed_shawu()
+	elif Globals.last_order.is_empty():
+		# Новый клиент с дефолтным заказом
+		_spawn_customer_with_order()
+	else:
+		# Восстанавливаем клиента с сохранённым заказом
+		_spawn_customer_with_saved_order()
 
 # ---------------- SPAWN ----------------
-func _spawn_customer(has_order: bool) -> void:
+func _spawn_customer_with_order() -> void:
 	_free_customer()
 	current_customer = SCENE_CUSTOMER.instantiate()
+	current_customer.state = Customer.State.ENTERING
+	current_customer.set_order(_get_default_order())  
+	# Устанавливаем случайного клиента (2-5, исключая бабку)
+	current_customer.set_customer_index(Globals.get_random_customer_index())
 	customer_spawn_point.add_child(current_customer)
+	current_customer.order_confirmed.connect(_on_customer_order_confirmed)
 	
-	if has_order:
-		current_customer.set_stand_still()
-		_spawn_packed_shawu()
+func _spawn_customer_with_saved_order() -> void:
+	_free_customer()
+	current_customer = SCENE_CUSTOMER.instantiate()
+	current_customer.state = Customer.State.ORDERING
+	current_customer.set_order(Globals.last_order)
+	# Устанавливаем случайного клиента (2-5)
+	current_customer.set_customer_index(Globals.get_random_customer_index())
+	customer_spawn_point.add_child(current_customer)
+	current_customer.order_confirmed.connect(_on_customer_order_confirmed)
+
+func _spawn_customer_stand_still() -> void:
+	_free_customer()
+	current_customer = SCENE_CUSTOMER.instantiate()
+	current_customer.state = Customer.State.WAITING
+	# Тот же клиент что был (используем last_customer_index)
+	if Globals.last_customer_index == Globals.GRANDMA_INDEX:
+		# Бабка - особый случай
+		current_customer.set_customer_index(Globals.GRANDMA_INDEX)
 	else:
-		current_customer.set_order(_get_default_order())
-		current_customer.order_confirmed.connect(_on_customer_order_confirmed)
+		current_customer.set_customer_index(Globals.last_customer_index if Globals.last_customer_index >= 2 else Globals.get_random_customer_index())
+	customer_spawn_point.add_child(current_customer)
 
 func _get_default_order() -> Dictionary:
 	return {"lavash": true, "meat": "chicken", "tomato": 1, "salad": 1}
@@ -81,7 +120,7 @@ func _free_instance(node: Node) -> void:
 func _input(event: InputEvent) -> void:
 	if not is_instance_valid(current_shawu):
 		return
-
+	
 	if event is InputEventMouseButton:
 		_handle_click(event)
 	elif event is InputEventMouseMotion and is_dragging:
@@ -90,12 +129,12 @@ func _input(event: InputEvent) -> void:
 func _handle_click(event: InputEventMouseButton) -> void:
 	if event.button_index != MOUSE_BUTTON_LEFT:
 		return
-	
+
 	var mouse_pos = get_global_mouse_position()
 	var sprite = current_shawu.get_node("Sprite2D") as Sprite2D
 	if not sprite:
 		return
-	
+
 	if event.pressed:
 		if sprite.get_rect().has_point(sprite.to_local(mouse_pos)):
 			is_dragging = true
@@ -124,16 +163,37 @@ func _deliver_shawu() -> void:
 
 func _on_delivery_complete() -> void:
 	_free_shawu()
-	money += Consts.SHAWU_REWARD
-	money_counter.text = str(money) + " деняк"
+	var reward := Consts.SHAWU_REWARD
+	money += reward
+	Globals.total_money = money
+	money_counter.text = str(money) + "₽"
 	Globals.last_packed_lavash = {}
+	Globals.last_order = {}
+
+	# Добавляем время и засчитываем клиента
+	Globals.add_customer_time()
+	Globals.customers_served += 1
+	_update_time_display()
+	
+	# Проверяем, закончился ли рабочий день
+	if Globals.is_work_day_over():
+		_end_work_day()
+		return
 
 	if is_instance_valid(current_customer):
 		_animate_customer_exit(current_customer)
 		current_customer = null
 
 	await get_tree().create_timer(Consts.EXIT_DELAY).timeout
-	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+	_spawn_customer_with_order()  # Спавним нового клиента с заказом
+
+func _update_time_display() -> void:
+	if time_label:
+		time_label.text = Globals.get_formatted_time()
+
+func _end_work_day() -> void:
+	# Переход на экран завершения дня
+	get_tree().change_scene_to_file("res://Scenes/EndDay.tscn")
 
 # ---------------- ANIMATION ----------------
 func _animate_customer_exit(customer: Customer) -> void:
@@ -160,6 +220,8 @@ func _animate_customer_exit(customer: Customer) -> void:
 # ---------------- CALLBACK ----------------
 func _on_customer_order_confirmed(order: Dictionary) -> void:
 	Globals.last_order = order
+	# Сохраняем индекс клиента для возврата из Kitchen
+	Globals.last_customer_index = current_customer.customer_index
 	get_tree().change_scene_to_file("res://Scenes/Kitchen.tscn")
 
 # ---------------- HELPERS ----------------

@@ -2,7 +2,7 @@ extends Node2D
 class_name Grill
 
 # --- Константы ---
-const TEXTURE_FRIED := preload("res://Textures/fried_shawu.png")
+const TEXTURE_FRIED := preload("res://Textures/Kitchen/fried_shawu.png")
 
 # --- Узлы ---
 @onready var grill_opened: Sprite2D = $grill_opened

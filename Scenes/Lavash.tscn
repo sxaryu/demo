@@ -1,7 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dit27r3wjirvi"]
 
-[ext_resource type="Script" uid="uid://ci715rdchhrwx" path="res://Scripts/Entities/lavash.gd" id="1_a6uqy"]
-[ext_resource type="Texture2D" uid="uid://nuwqvjutu55c" path="res://Textures/lavash.png" id="1_vqtja"]
+[ext_resource type="Script" uid="uid://n1emunh8p8a1" path="res://Scripts/Entities/lavash.gd" id="1_a6uqy"]
+[ext_resource type="Texture2D" uid="uid://dbux45ih8g8dv" path="res://Textures/Ingredients/lavash.png" id="1_vqtja"]
+
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a6uqy"]
 radius = 222.91292

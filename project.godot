@@ -21,6 +21,7 @@ Globals="*res://Scripts/Core/globals.gd"
 OrderManager="*res://Scripts/Core/OrderManager.gd"
 Database="*res://Scripts/Core/database.gd"
 Consts="*res://Scripts/Core/consts.gd"
+DebugMenu="*res://Scenes/DebugMenu.tscn"
 
 [display]
 
@@ -33,6 +34,10 @@ window/vsync/vsync_mode=0
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
+
+[gui]
+
+theme/custom_font="uid://3ecj6m1sleyy"
 
 [plugin]
 

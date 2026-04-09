@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://clstpskkbf6bs"]
 
-[ext_resource type="Texture2D" uid="uid://dgtin5nb4k03c" path="res://Textures/hall.png" id="1_nhi01"]
-[ext_resource type="Script" uid="uid://dq0fxiqfejcuy" path="res://Scripts/Scenes/hall.gd" id="1_rvgij"]
-[ext_resource type="Texture2D" uid="uid://duwrarq2fkj87" path="res://Textures/stoika.png" id="2_owmlv"]
-[ext_resource type="Texture2D" uid="uid://ctpj5nl7snlsq" path="res://Textures/cashbox.png" id="3_rp0x8"]
+[ext_resource type="Texture2D" uid="uid://dw07s64v4suep" path="res://Textures/UI/hall.png" id="1_nhi01"]
+[ext_resource type="Script" uid="uid://b0s1mk5w1nafr" path="res://Scripts/Scenes/hall.gd" id="1_rvgij"]
+[ext_resource type="Texture2D" uid="uid://c55br5skawlj5" path="res://Textures/UI/stoika.png" id="2_owmlv"]
+[ext_resource type="Texture2D" uid="uid://dnnqkh00ujg0n" path="res://Textures/UI/cashbox.png" id="3_rp0x8"]
 
 [node name="Hall" type="Node2D"]
 script = ExtResource("1_rvgij")
@@ -45,7 +45,7 @@ offset_top = 6.0
 offset_right = 299.0
 offset_bottom = 76.0
 theme_override_font_sizes/font_size = 32
-text = "0 деняк"
+text = "0₽"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -53,3 +53,17 @@ vertical_alignment = 1
 position = Vector2(1028, 980)
 
 [node name="CustomerSpawnPoint" type="Marker2D" parent="."]
+
+[node name="TimePanel" type="Panel" parent="."]
+offset_left = 29.0
+offset_top = 23.0
+offset_right = 220.0
+offset_bottom = 72.0
+
+[node name="TimeLabel" type="Label" parent="TimePanel"]
+layout_mode = 0
+offset_right = 191.0
+offset_bottom = 49.0
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,0 +1,93 @@
+[gd_scene load_steps=8 format=3 uid="uid://ysx5xybjbism"]
+
+[ext_resource type="Texture2D" uid="uid://dw07s64v4suep" path="res://Textures/UI/hall.png" id="1_3edat"]
+[ext_resource type="Script" uid="uid://cl8uqduesuh6v" path="res://Scripts/Scenes/intro.gd" id="1_d0kpp"]
+[ext_resource type="Texture2D" uid="uid://e0jgx0gvwmkq" path="res://Textures/Customers/NPC/npc_grandma.png" id="1_granny"]
+[ext_resource type="Texture2D" uid="uid://bqxj4wwgo7q5o" path="res://Textures/UI/chat.png" id="2_chat"]
+[ext_resource type="Texture2D" uid="uid://c55br5skawlj5" path="res://Textures/UI/stoika.png" id="2_vmpge"]
+[ext_resource type="Texture2D" uid="uid://dnnqkh00ujg0n" path="res://Textures/UI/cashbox.png" id="3_d0kpp"]
+
+[sub_resource type="LabelSettings" id="LabelSettings"]
+font_size = 28
+font_color = Color(0, 0, 0, 1)
+
+[node name="Intro" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_d0kpp")
+
+[node name="GrandmaSprite" type="Sprite2D" parent="."]
+position = Vector2(487, 581)
+texture = ExtResource("1_granny")
+
+[node name="SpeechBubble" type="NinePatchRect" parent="."]
+layout_mode = 0
+offset_left = 747.0
+offset_top = 74.0
+offset_right = 1717.0
+offset_bottom = 362.0
+texture = ExtResource("2_chat")
+region_rect = Rect2(1, 1, 695, 407)
+patch_margin_left = 126
+patch_margin_top = 32
+patch_margin_right = 48
+patch_margin_bottom = 48
+
+[node name="DialogLabel" type="Label" parent="SpeechBubble"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+label_settings = SubResource("LabelSettings")
+autowrap_mode = 3
+
+[node name="NextButton" type="Button" parent="SpeechBubble"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "Далее"
+
+[node name="Background" type="TextureRect" parent="."]
+z_index = -1
+layout_mode = 0
+offset_top = 6.1035156e-05
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+texture = ExtResource("1_3edat")
+metadata/_edit_lock_ = true
+
+[node name="Table" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(960.00006, 937)
+rotation = 3.1415927
+scale = Vector2(1, 1.1317829)
+texture = ExtResource("2_vmpge")
+metadata/_edit_lock_ = true
+
+[node name="Cashbox" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(195.00002, 833.00006)
+scale = Vector2(0.7439965, 0.8055048)
+texture = ExtResource("3_d0kpp")

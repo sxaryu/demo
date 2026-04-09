@@ -1,28 +1,29 @@
-[gd_scene load_steps=24 format=3 uid="uid://0ltjwyrslvql"]
+[gd_scene load_steps=25 format=3 uid="uid://0ltjwyrslvql"]
 
 [ext_resource type="Script" uid="uid://eqd5tf3xsch5" path="res://Scripts/Scenes/kitchen.gd" id="1_a5466"]
 [ext_resource type="PackedScene" uid="uid://6iplpt7dyms7" path="res://Scenes/IngredientButton.tscn" id="2_6fiwt"]
-[ext_resource type="Texture2D" uid="uid://c47qmtnmg80vk" path="res://Textures/chillen_summer_cover.jpg" id="2_th3l3"]
-[ext_resource type="Texture2D" uid="uid://bcp7d4coxhdeh" path="res://Textures/salad_piece.png" id="4_yp2dn"]
-[ext_resource type="Texture2D" uid="uid://du7ecia4j6xy5" path="res://Textures/meat_piece.png" id="5_0sqtt"]
-[ext_resource type="Texture2D" uid="uid://ddp0jmgxm2dkk" path="res://Textures/totmato_container.png" id="5_digll"]
-[ext_resource type="Texture2D" uid="uid://b1xqtlsapgowd" path="res://Textures/tomato_piece.png" id="6_mxqhq"]
-[ext_resource type="Texture2D" uid="uid://d0iawjkvkveix" path="res://Textures/salad_container.png" id="7_57t66"]
-[ext_resource type="Texture2D" uid="uid://c8mvi26su1ny8" path="res://Textures/next.png" id="9_0sqtt"]
-[ext_resource type="Texture2D" uid="uid://cnc0k3ec644id" path="res://Textures/meat_container.png" id="9_mxqhq"]
+[ext_resource type="Texture2D" uid="uid://nkdhu5fppwue" path="res://Textures/UI/chillen_summer_cover.jpg" id="2_th3l3"]
+[ext_resource type="Texture2D" uid="uid://d3nmskplv6l23" path="res://Textures/Ingredients/Pieces/salad_piece.png" id="4_yp2dn"]
+[ext_resource type="Texture2D" uid="uid://cq55qluy87g0e" path="res://Textures/Ingredients/Pieces/meat_piece.png" id="5_0sqtt"]
+[ext_resource type="Texture2D" uid="uid://dtfdxun2etm8m" path="res://Textures/Ingredients/Containers/totmato_container.png" id="5_digll"]
+[ext_resource type="Texture2D" uid="uid://i0epk1g8kdy" path="res://Textures/Ingredients/Pieces/tomato_piece.png" id="6_mxqhq"]
+[ext_resource type="Texture2D" uid="uid://csqbpipypi5de" path="res://Textures/Ingredients/Containers/salad_container.png" id="7_57t66"]
+[ext_resource type="Texture2D" uid="uid://cjq5xxmtl6yjc" path="res://Textures/UI/next.png" id="9_0sqtt"]
+[ext_resource type="Texture2D" uid="uid://b3uf4avabu6tf" path="res://Textures/Ingredients/Containers/meat_container.png" id="9_mxqhq"]
 [ext_resource type="PackedScene" uid="uid://c0ushf5r3122s" path="res://Scenes/SauceBottle.tscn" id="11_57t66"]
 [ext_resource type="PackedScene" uid="uid://nwn67v8rs2yw" path="res://Scenes/LavashButton.tscn" id="11_digll"]
-[ext_resource type="Texture2D" uid="uid://bb51u4t4baf8a" path="res://Textures/cheese_container.png" id="12_cheese"]
-[ext_resource type="Texture2D" uid="uid://bfjis71fpik5p" path="res://Textures/cheese_piece.png" id="13_cheese"]
-[ext_resource type="Texture2D" uid="uid://b3pn8o0dss37o" path="res://Textures/onion_container.png" id="14_onion"]
+[ext_resource type="Texture2D" uid="uid://domsymctfp7jo" path="res://Textures/Ingredients/Containers/cheese_container.png" id="12_cheese"]
+[ext_resource type="Texture2D" uid="uid://bp7fpsfaklj6r" path="res://Textures/Ingredients/Pieces/cheese_piece.png" id="13_cheese"]
+[ext_resource type="Texture2D" uid="uid://bjqprtcm3g2i6" path="res://Textures/Ingredients/Containers/onion_container.png" id="14_onion"]
 [ext_resource type="Script" uid="uid://b5jcfywj0a0q1" path="res://Scripts/UI/IngredientsWeightUI.gd" id="14_vo3np"]
-[ext_resource type="Texture2D" uid="uid://pfvs8qnliwo4" path="res://Textures/pepper_container.png" id="14_vpw7v"]
-[ext_resource type="Texture2D" uid="uid://bnc68kac21gjc" path="res://Textures/pepper_piece.png" id="15_kte2b"]
-[ext_resource type="Texture2D" uid="uid://cfpd5k4klbu7r" path="res://Textures/onion_piece.png" id="15_onion"]
-[ext_resource type="Texture2D" uid="uid://djl05gqktdxmj" path="res://Textures/ketchup_bottle.png" id="20_wpu4e"]
-[ext_resource type="Texture2D" uid="uid://qhlxk87hy7hb" path="res://Textures/ketchup_piece.png" id="21_qfxda"]
-[ext_resource type="Texture2D" uid="uid://dfr2qwbyv1tij" path="res://Textures/mayo_sauce.png" id="22_2rn5v"]
-[ext_resource type="Texture2D" uid="uid://xfg7ojkbebcu" path="res://Textures/mayo_piece.png" id="23_r1twu"]
+[ext_resource type="Texture2D" uid="uid://bo1ly23eu2n8u" path="res://Textures/Ingredients/Containers/pepper_container.png" id="14_vpw7v"]
+[ext_resource type="Texture2D" uid="uid://cioep2dcd3nc" path="res://Textures/Ingredients/Pieces/pepper_piece.png" id="15_kte2b"]
+[ext_resource type="Texture2D" uid="uid://bixyldcifkh2n" path="res://Textures/Ingredients/Pieces/onion_piece.png" id="15_onion"]
+[ext_resource type="Texture2D" uid="uid://bmk2f771dtb0t" path="res://Textures/Ingredients/lavash_stack.png" id="19_qfxda"]
+[ext_resource type="Texture2D" uid="uid://bgfkrsp0aaa3l" path="res://Textures/Ingredients/Sauces/ketchup_bottle.png" id="20_wpu4e"]
+[ext_resource type="Texture2D" uid="uid://dtteb5j8uo7nu" path="res://Textures/Ingredients/Pieces/ketchup_piece.png" id="21_qfxda"]
+[ext_resource type="Texture2D" uid="uid://ba680ymr73685" path="res://Textures/Ingredients/Sauces/mayo_sauce.png" id="22_2rn5v"]
+[ext_resource type="Texture2D" uid="uid://b4sibhtjml5v2" path="res://Textures/Ingredients/Pieces/mayo_piece.png" id="23_r1twu"]
 
 [node name="Kitchen" type="Node2D"]
 script = ExtResource("1_a5466")
@@ -49,60 +50,60 @@ anchors_preset = 0
 
 [node name="Tomato" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
-offset_left = 1619.0
-offset_top = 38.0
-offset_right = 1994.0
-offset_bottom = 368.0
+offset_left = 1629.0
+offset_top = 40.0
+offset_right = 2004.0
+offset_bottom = 370.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("5_digll")
 ingredient_texture = ExtResource("6_mxqhq")
 
 [node name="Salad" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
-offset_left = 1619.0
-offset_top = 269.0
-offset_right = 1994.0
-offset_bottom = 599.0
+offset_left = 1629.0
+offset_top = 271.0
+offset_right = 2004.0
+offset_bottom = 601.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("7_57t66")
 ingredient_texture = ExtResource("4_yp2dn")
 
 [node name="Meat" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
-offset_left = 1619.0
-offset_top = 504.0
-offset_right = 1994.0
-offset_bottom = 834.0
+offset_left = 1629.0
+offset_top = 506.0
+offset_right = 2004.0
+offset_bottom = 836.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("9_mxqhq")
 ingredient_texture = ExtResource("5_0sqtt")
 
 [node name="Cheese" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
-offset_left = 1350.0
-offset_top = 40.0
-offset_right = 1725.0
-offset_bottom = 370.0
+offset_left = 1360.0
+offset_top = 42.0
+offset_right = 1735.0
+offset_bottom = 372.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("12_cheese")
 ingredient_texture = ExtResource("13_cheese")
 
 [node name="Onion" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
-offset_left = 1350.0
-offset_top = 271.0
-offset_right = 1725.0
-offset_bottom = 601.0
+offset_left = 1360.0
+offset_top = 273.0
+offset_right = 1735.0
+offset_bottom = 603.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("14_onion")
 ingredient_texture = ExtResource("15_onion")
 
 [node name="Pepper" parent="IngredientPanel" instance=ExtResource("2_6fiwt")]
 layout_mode = 0
-offset_left = 1350.0
-offset_top = 504.0
-offset_right = 1725.0
-offset_bottom = 834.0
+offset_left = 1360.0
+offset_top = 506.0
+offset_right = 1735.0
+offset_bottom = 836.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("14_vpw7v")
 ingredient_texture = ExtResource("15_kte2b")
@@ -137,6 +138,7 @@ offset_left = -48.999977
 offset_top = 1367.0
 offset_right = 326.00003
 offset_bottom = 1763.6942
+texture_normal = ExtResource("19_qfxda")
 
 [node name="Ketchup" parent="." instance=ExtResource("11_57t66")]
 offset_left = 20.0

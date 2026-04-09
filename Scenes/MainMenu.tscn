@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://doox7smqlgs1x"]
+[gd_scene load_steps=10 format=3 uid="uid://doox7smqlgs1x"]
 
 [ext_resource type="Script" uid="uid://buqn0uw4jtulr" path="res://Scripts/Scenes/main_menu.gd" id="1_tt5f1"]
+[ext_resource type="Texture2D" uid="uid://boxsaa5aty5dt" path="res://Textures/UI/menu_background.png" id="2_853f1"]
+[ext_resource type="Texture2D" uid="uid://cdpvcvcy5mj2n" path="res://Textures/UI/game_name.png" id="3_xim88"]
+[ext_resource type="Texture2D" uid="uid://hbai5tsb7033" path="res://Textures/UI/green_idle_button.png" id="4_koqhg"]
+[ext_resource type="Texture2D" uid="uid://c3c6t5etu6164" path="res://Textures/UI/green_hover_button.png" id="5_cmrfp"]
+[ext_resource type="FontFile" uid="uid://dkqqe2q70t4n3" path="res://Fonts/Exo2-VariableFont_wght.ttf" id="6_koqhg"]
+[ext_resource type="Texture2D" uid="uid://dsoagafawh4u3" path="res://Textures/UI/red_idle_button.png" id="6_loo7a"]
+[ext_resource type="Texture2D" uid="uid://bi1wykrir2j4v" path="res://Textures/UI/red_hover_button.png" id="7_if7li"]
+
+[sub_resource type="FontVariation" id="FontVariation_cmrfp"]
+base_font = ExtResource("6_koqhg")
+variation_opentype = {
+2003265652: 700
+}
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -11,43 +24,64 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tt5f1")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.92, 0.8372, 0.83858, 1)
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_853f1")
+metadata/_edit_lock_ = true
 
-[node name="PlayButton" type="Button" parent="."]
+[node name="Logo" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 571.0
+offset_top = 52.0
+offset_right = 1893.0
+offset_bottom = 723.0
+texture = ExtResource("3_xim88")
+metadata/_edit_lock_ = true
+
+[node name="PlayButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 672.0
+offset_right = 644.0
+offset_bottom = 783.0
+action_mode = 0
+texture_normal = ExtResource("4_koqhg")
+texture_hover = ExtResource("5_cmrfp")
+
+[node name="Label" type="Label" parent="PlayButton"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -229.25
-offset_top = -125.5
-offset_right = 229.25
-offset_bottom = -50.5
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = -1
+anchor_right = 0.99300003
+anchor_bottom = 1.0
+offset_right = -0.22003174
+offset_bottom = 1.0
+theme_override_fonts/font = SubResource("FontVariation_cmrfp")
 theme_override_font_sizes/font_size = 48
 text = "Играть"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="QuitButton" type="Button" parent="."]
+[node name="QuitButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 832.0
+offset_right = 644.0
+offset_bottom = 943.0
+action_mode = 0
+texture_normal = ExtResource("6_loo7a")
+texture_hover = ExtResource("7_if7li")
+
+[node name="Label" type="Label" parent="QuitButton"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -229.0
-offset_top = -37.5
-offset_right = 228.0
-offset_bottom = 37.5
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = -1
+anchor_right = 0.99300003
+anchor_bottom = 1.0
+offset_right = -0.22003174
+offset_bottom = 1.0
+theme_override_fonts/font = SubResource("FontVariation_cmrfp")
 theme_override_font_sizes/font_size = 48
 text = "Выйти"
+horizontal_alignment = 1
+vertical_alignment = 1

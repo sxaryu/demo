@@ -9,7 +9,6 @@ func _pressed():
 
 	var kitchen_wrap = get_tree().current_scene
 	if kitchen_wrap and kitchen_wrap.has_method("start_package_preview"):
-		# Передаём только текстуру
 		kitchen_wrap.start_package_preview(package_texture)
 	else:
 		push_error("PackagingButton: текущая сцена не содержит метод start_package_preview()!")

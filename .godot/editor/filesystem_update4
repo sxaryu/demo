@@ -1,1 +1,2 @@
-res://Scenes/Kitchen.tscn
+res://Scenes/KitchenWrap.tscn
+res://Scripts/Scenes/kitchen_wrap.gd

@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://cg103b6lo0wxo"]
 
-[ext_resource type="Script" uid="uid://ca1klxe4xo6rt" path="res://Scripts/Scenes/kitchen_wrap.gd" id="1_3y5j7"]
-[ext_resource type="Texture2D" uid="uid://c47qmtnmg80vk" path="res://Textures/chillen_summer_cover.jpg" id="2_shtwf"]
-[ext_resource type="Texture2D" uid="uid://c8mvi26su1ny8" path="res://Textures/next.png" id="3_shtwf"]
+[ext_resource type="Script" uid="uid://c2ydooiq8iori" path="res://Scripts/Scenes/kitchen_wrap.gd" id="1_3y5j7"]
+[ext_resource type="Texture2D" uid="uid://nkdhu5fppwue" path="res://Textures/UI/chillen_summer_cover.jpg" id="2_shtwf"]
+[ext_resource type="Texture2D" uid="uid://cjq5xxmtl6yjc" path="res://Textures/UI/next.png" id="3_shtwf"]
 [ext_resource type="PackedScene" uid="uid://ctnqnb0c2xjya" path="res://Scenes/Grill.tscn" id="4_0hpwd"]
 [ext_resource type="PackedScene" uid="uid://dgywi50tih5yp" path="res://Scenes/PackagingButton.tscn" id="5_0hpwd"]
 
@@ -30,10 +30,10 @@ metadata/_edit_lock_ = true
 [node name="Grill" parent="WorkArea" instance=ExtResource("4_0hpwd")]
 
 [node name="PackagingButton" parent="WorkArea" instance=ExtResource("5_0hpwd")]
-offset_left = 1677.0
+offset_left = 1616.0
 offset_top = 24.0
 offset_right = 1871.0728
-offset_bottom = 315.0
+offset_bottom = 352.0
 ignore_texture_size = true
 stretch_mode = 0
 

@@ -4,7 +4,7 @@ extends Node
 const DB_NAME := "shawarama.db"
 
 # ==================== НАГРАДЫ ====================
-const SHAWU_REWARD := 100
+const SHAWU_REWARD := 250
 
 # ==================== АНИМАЦИИ ====================
 const ANIM_FADE_DURATION := 0.25
@@ -33,8 +33,8 @@ const POUR_GRAMS := 5       # Грамм за одно сыпание
 const CLICK_GRAMS := 15     # Грамм за клик
 
 # ==================== KITCHEN WRAP ====================
-const PACKAGE_WIDTH := 194.073
-const PACKAGE_HEIGHT := 291.0
+const PACKAGE_WIDTH := 195
+const PACKAGE_HEIGHT := 290
 
 # ==================== HALL ====================
 const DELIVERY_DISTANCE := 130.0

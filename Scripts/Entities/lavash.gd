@@ -30,8 +30,8 @@ var ingredient_max_weight: Dictionary = {
 @onready var sauce_sprite: Sprite2D = $SauceResult
 
 # --- Константы ---
-const TEXTURE_FRIED := preload("res://Textures/fried_shawu.png")
-const PORTION_GRAMS := 5  # Сколько грамм сыпется за раз
+const TEXTURE_FRIED := preload("res://Textures/Kitchen/fried_shawu.png")
+const PORTION_GRAMS := 5
 
 func _ready() -> void:
 	add_to_group("lavash")
