@@ -11,6 +11,19 @@ enum State {
 # --- Константы ---
 const ORDER_TEMPLATES := preload("res://Scripts/Utils/order_templates.gd")
 
+const NPC_DATA := {
+	"grandma": {"sprite": "npc_grandma.png", "name": "Бабушка"},
+	"bald_man": {"sprite": "npc_bald_man.png", "name": "Лысый"},
+	"blonde_girl": {"sprite": "npc_blonde_girl.png", "name": "Блондинка"},
+	"businessman": {"sprite": "npc_businessman.png", "name": "Бизнесмен"},
+	"ginger_man": {"sprite": "npc_ginger_man.png", "name": "Рыжий"},
+	"glasses_girl": {"sprite": "npc_glasses_girl.png", "name": "Очкарик"},
+	"goth_girl": {"sprite": "npc_goth_girl.png", "name": "Гот"},
+	"grandpa": {"sprite": "npc_grandpa.png", "name": "Дедушка"},
+	"pink_girl": {"sprite": "npc_pink_girl.png", "name": "Розовая"},
+	"student": {"sprite": "npc_student.png", "name": "Студент"}
+}
+
 # --- Узлы ---
 @onready var character: Sprite2D = $Character
 @onready var bubble: NinePatchRect = $SpeechBubble
@@ -21,20 +34,23 @@ const ORDER_TEMPLATES := preload("res://Scripts/Utils/order_templates.gd")
 signal order_confirmed(order: Dictionary)
 
 # --- Переменные ---
-var state: State = State.ENTERING
-var order_templates: Node
+var state: State = State.WAITING
+var order_templates: Node = null
 var order_data: Dictionary = {}
 var current_full_text := ""
 var type_speed := 0.02
-var customer_index: int = 1  # Индекс клиента (1-5)
+var customer_id: String = "bald_man"
+
+# Внутренние переменные состояния
+var _idle_time := 0.0
+var _base_y := 0.0
+var _is_order_shown := false
+var _typing_tween: Tween = null
 
 # --- Текстовые данные (статические) ---
 static var _greetings := ["Привет!", "Здравствуйте!", "Добрый день!", "Приветики!", "Приветствую!"]
-static var _requests := ["хочу", "мне нужно", "дайте мне", "можно мне", "закажу", "мне пожалуйста"]
 static var _thanks := ["спасибо", "спасибо большое", "благодарю", "спасибочки", "очень благодарен"]
 
-# Маппинги
-static var _size_phrases := {}
 static var _ingredient_names := {
 	"chicken": "курица", "meat": "мясо", "tomato": "помидор",
 	"salad": "салат", "cheese": "сыр", "onion": "лук"
@@ -46,26 +62,16 @@ static var _sauce_names := {
 # ==================== READY ====================
 func _ready() -> void:
 	order_templates = ORDER_TEMPLATES.new()
-	_init_size_phrases()
 	
 	next_button.pressed.connect(_on_next_pressed)
+	
 	character.visible = false
 	_hide_dialog()
 	
-	# Применяем текстуру если индекс уже установлен
-	if customer_index >= 1:
+	if customer_id != "":
 		_update_texture()
 	
-	# Запускаем начальное состояние
 	_enter_state(state)
-
-func _init_size_phrases() -> void:
-	if _size_phrases.is_empty():
-		_size_phrases = {
-			order_templates.Size.SMALL: ["маленькую", "мини", "небольшую"],
-			order_templates.Size.MEDIUM: ["маленькую", "обычную", "нормальную"],
-			order_templates.Size.LARGE: ["большую", "мега", "огромную", "побольше"]
-		}
 
 # ==================== STATE MACHINE ====================
 func _enter_state(new_state: State) -> void:
@@ -80,6 +86,7 @@ func _enter_state(new_state: State) -> void:
 			_enter_waiting()
 
 func _enter_entering() -> void:
+	_is_order_shown = false
 	character.visible = true
 	character.scale = Vector2(0.85, 0.85)
 	character.modulate.a = 0.0
@@ -94,74 +101,92 @@ func _enter_entering() -> void:
 	_enter_state(State.ORDERING)
 
 func _enter_ordering() -> void:
+	# Защита от повторного вызова при восстановлении состояния
+	if _is_order_shown:
+		return
+		
+	_base_y = character.position.y
 	_show_order()
 
 func _enter_waiting() -> void:
+	# Останавливаем печатание
+	_typing_tween = null
+		
 	character.visible = true
 	character.scale = Vector2.ONE
 	character.modulate.a = 1.0
 	_hide_dialog()
+	_idle_time = 0.0
+	_base_y = character.position.y
+	_is_order_shown = false
 
-# ==================== ORDER ====================
+func _process(delta: float) -> void:
+	if state == State.WAITING or state == State.ORDERING:
+		if character.visible:
+			_idle_time += delta
+			var offset := sin(_idle_time * 3.0) * 5.0
+			character.position.y = _base_y + offset
+
+# ==================== ПУБЛИЧНЫЕ МЕТОДЫ ====================
 func set_order(order: Dictionary) -> void:
 	order_data = order.duplicate(true)
 
-func set_customer_index(index: int) -> void:
-	customer_index = index
-	# Применяем текстуру только если нода уже готова
+func set_state(new_state: State) -> void:
+	_enter_state(new_state)
+
+func set_customer_id(id: String) -> void:
+	customer_id = id
 	if is_inside_tree():
 		_update_texture()
 
+# ==================== ПРИВАТНЫЕ МЕТОДЫ ====================
 func _update_texture() -> void:
-	var texture_path: String
-	
-	if customer_index == Globals.GRANDMA_INDEX:
-		# Бабка - отдельный спрайт
-		texture_path = "res://Textures/Customers/grandma.png"
-	else:
-		# Обычные клиенты 2-5
-		texture_path = "res://Textures/Customers/customer %d.png" % customer_index
+	var data = NPC_DATA.get(customer_id, NPC_DATA["bald_man"])
+	var texture_path = "res://Textures/Customers/NPC/" + data.sprite
 	
 	if ResourceLoader.exists(texture_path):
 		character.texture = load(texture_path)
 	else:
 		push_warning("Customer: текстура не найдена: ", texture_path)
 
-# ==================== SHOW ORDER ====================
 func _show_order() -> void:
-	if order_data.is_empty() or not order_data.has("name"):
-		order_data = order_templates.generate_order(
-			order_templates.get_random_template(),
-			order_templates.get_random_size()
-		)
+	_is_order_shown = true
 	
-	var size = order_data.get("size", order_templates.Size.MEDIUM)
+	bubble.visible = false
+	bubble.modulate.a = 0.0
+	bubble.scale = Vector2(0.8, 0.8)
+	label.text = ""
+	next_button.visible = false
+
+	if order_data.is_empty() or not order_data.has("name"):
+		if order_templates:
+			order_data = order_templates.generate_order(
+				order_templates.get_random_template(),
+				order_templates.get_random_size()
+			)
+		else:
+			push_error("Order templates не инициализированы!")
+			return
+	
+	var size = order_data.get("size", 1)
 	var size_text := _get_size_text(size)
 	
-	current_full_text = "%s, хочу %s %s" % [
-		_greetings.pick_random(),
-		size_text,
-		order_data.get("name_accusative", "шаурму")
-	]
+	var greeting = _greetings.pick_random()
+	var item_name = order_data.get("name_accusative", "шаурму")
 	
-	# Ингредиенты
+	current_full_text = "%s, хочу %s %s" % [greeting, size_text, item_name]
+	
 	var ing_names := _get_ingredient_names(order_data.get("ingredients", []))
 	if not ing_names.is_empty():
 		current_full_text += ", с " + ", ".join(ing_names)
 	
-	# Соусы
 	var sauce_list := _get_sauce_names(order_data.get("sauces", []))
 	if not sauce_list.is_empty():
 		current_full_text += " и " + ", ".join(sauce_list) + " соус"
 	
 	current_full_text += ". %s" % _thanks.pick_random()
 	
-	label.text = ""
 	bubble.visible = true
-	bubble.scale = Vector2(0.8, 0.8)
-	bubble.modulate.a = 0.0
-	next_button.visible = false
-
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(bubble, "scale", Vector2.ONE, 0.25)\
@@ -173,18 +198,26 @@ func _show_order() -> void:
 
 func _type_text() -> void:
 	label.text = ""
+	_typing_tween = null  # Сбрасываем ссылку
 	
 	for i in range(current_full_text.length()):
+		if not bubble.visible:  # Проверяем, не закрыт ли диалог
+			return
+			
 		label.text += current_full_text[i]
 		await get_tree().create_timer(type_speed).timeout
-	
+		
+		if not bubble.visible:
+			return
+
 	next_button.visible = true
 
 func _get_size_text(size) -> String:
+	# Замените 0,1,2 на order_templates.Size.SMALL и т.д. если доступны
 	var size_texts := {
-		order_templates.Size.SMALL: "маленькую",
-		order_templates.Size.MEDIUM: "среднюю",
-		order_templates.Size.LARGE: "большую"
+		0: "маленькую",
+		1: "среднюю",
+		2: "большую"
 	}
 	return size_texts.get(size, "среднюю")
 
@@ -204,9 +237,12 @@ func _get_sauce_names(sauces: Array) -> PackedStringArray:
 
 # ==================== CALLBACKS ====================
 func _on_next_pressed() -> void:
+	_typing_tween = null  # Останавливаем печатание
+		
 	order_confirmed.emit(order_data)
 	_enter_state(State.WAITING)
 
 func _hide_dialog() -> void:
 	bubble.visible = false
 	next_button.visible = false
+	_typing_tween = null

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://6iplpt7dyms7"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" uid="uid://dku5o8lrqg7un" path="res://Scripts/UI/ingredient_button.gd" id="1_4mdon"]
-[ext_resource type="PackedScene" uid="uid://bgolx46u0oeaa" path="res://Scenes/Ingredient.tscn" id="2_gbo8m"]
+[ext_resource type="Script" path="res://Scripts/UI/ingredient_button.gd" id="1_4mdon"]
+[ext_resource type="PackedScene" path="res://Scenes/Ingredient.tscn" id="2_gbo8m"]
 
 [node name="IngredientButton" type="TextureButton"]
 action_mode = 0

@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cjxk5qm2y6nl"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" uid="uid://bxq7r3ky0snm2" path="res://Scripts/Scenes/end_day.gd" id="1_script"]
+[ext_resource type="Script" path="res://Scripts/Scenes/end_day.gd" id="1_script"]
 
 [node name="EndDay" type="Control"]
 layout_mode = 3

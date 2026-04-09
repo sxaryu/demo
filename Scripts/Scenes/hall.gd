@@ -45,34 +45,36 @@ func _ready() -> void:
 func _spawn_customer_with_order() -> void:
 	_free_customer()
 	current_customer = SCENE_CUSTOMER.instantiate()
-	current_customer.state = Customer.State.ENTERING
 	current_customer.set_order(_get_default_order())  
-	# Устанавливаем случайного клиента (2-5, исключая бабку)
-	current_customer.set_customer_index(Globals.get_random_customer_index())
+	# Устанавливаем случайного клиента (из NPC_IDS)
+	current_customer.set_customer_id(Globals.get_random_customer_id())
 	customer_spawn_point.add_child(current_customer)
 	current_customer.order_confirmed.connect(_on_customer_order_confirmed)
+	# Явно устанавливаем ENTERING - начнётся анимация появления
+	current_customer.set_state(Customer.State.ENTERING)
 	
 func _spawn_customer_with_saved_order() -> void:
 	_free_customer()
 	current_customer = SCENE_CUSTOMER.instantiate()
-	current_customer.state = Customer.State.ORDERING
 	current_customer.set_order(Globals.last_order)
-	# Устанавливаем случайного клиента (2-5)
-	current_customer.set_customer_index(Globals.get_random_customer_index())
+	# Используем сохранённого клиента
+	current_customer.set_customer_id(Globals.last_customer_id if Globals.last_customer_id != "" else Globals.get_random_customer_id())
 	customer_spawn_point.add_child(current_customer)
 	current_customer.order_confirmed.connect(_on_customer_order_confirmed)
+	# Явно устанавливаем ORDERING - покажем заказ
+	current_customer.set_state(Customer.State.ORDERING)
 
 func _spawn_customer_stand_still() -> void:
 	_free_customer()
 	current_customer = SCENE_CUSTOMER.instantiate()
-	current_customer.state = Customer.State.WAITING
-	# Тот же клиент что был (используем last_customer_index)
-	if Globals.last_customer_index == Globals.GRANDMA_INDEX:
-		# Бабка - особый случай
-		current_customer.set_customer_index(Globals.GRANDMA_INDEX)
+	# Тот же клиент что был
+	if Globals.last_customer_id == Globals.GRANDMA_ID:
+		current_customer.set_customer_id(Globals.GRANDMA_ID)
 	else:
-		current_customer.set_customer_index(Globals.last_customer_index if Globals.last_customer_index >= 2 else Globals.get_random_customer_index())
+		current_customer.set_customer_id(Globals.last_customer_id if Globals.last_customer_id != "" else Globals.get_random_customer_id())
 	customer_spawn_point.add_child(current_customer)
+	# Явно устанавливаем WAITING - клиент молча ждёт
+	current_customer.set_state(Customer.State.WAITING)
 
 func _get_default_order() -> Dictionary:
 	return {"lavash": true, "meat": "chicken", "tomato": 1, "salad": 1}
@@ -220,8 +222,8 @@ func _animate_customer_exit(customer: Customer) -> void:
 # ---------------- CALLBACK ----------------
 func _on_customer_order_confirmed(order: Dictionary) -> void:
 	Globals.last_order = order
-	# Сохраняем индекс клиента для возврата из Kitchen
-	Globals.last_customer_index = current_customer.customer_index
+	# Сохраняем ID клиента для возврата из Kitchen
+	Globals.last_customer_id = current_customer.customer_id
 	get_tree().change_scene_to_file("res://Scenes/Kitchen.tscn")
 
 # ---------------- HELPERS ----------------

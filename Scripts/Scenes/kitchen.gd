@@ -148,7 +148,7 @@ func _on_done_pressed() -> void:
 	current_lavash = null
 
 # ---------------- SAUCE MODE ----------------
-func enable_sauce_mode(sauce_id: String, brush: Texture2D) -> void:
+func enable_sauce_mode(_sauce_id: String, brush: Texture2D) -> void:
 	_cleanup_state()
 	
 	is_sauce_mode = true

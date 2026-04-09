@@ -18,6 +18,8 @@ var dialogs := [
 var current_index := 0
 var current_full_text := ""
 var type_speed := 0.02
+var _idle_time := 0.0
+var _base_y := 0.0
 
 func _ready() -> void:
 	next_button.pressed.connect(_on_next_pressed)
@@ -28,6 +30,7 @@ func _ready() -> void:
 	_show_grandma()
 
 func _show_grandma() -> void:
+	_base_y = grandma_sprite.position.y
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(grandma_sprite, "modulate:a", 1.0, 0.5)
@@ -37,6 +40,11 @@ func _show_grandma() -> void:
 	await tween.finished
 	await get_tree().create_timer(0.3).timeout
 	_show_bubble()
+
+func _process(delta: float) -> void:
+	_idle_time += delta
+	var offset := sin(_idle_time * 3.0) * 5.0
+	grandma_sprite.position.y = _base_y + offset
 
 func _show_bubble() -> void:
 	var tween := create_tween()
@@ -59,8 +67,8 @@ func _show_dialog() -> void:
 		
 		_type_text()
 	else:
-		# Бабка (grandma) будет первым клиентом
-		Globals.last_customer_index = Globals.GRANDMA_INDEX
+		# Бабка будет первым клиентом
+		Globals.last_customer_id = Globals.GRANDMA_ID
 		get_tree().change_scene_to_file("res://Scenes/Hall.tscn")
 
 func _type_text() -> void:

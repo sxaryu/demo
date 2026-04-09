@@ -1,2 +1,3 @@
-res://Scenes/KitchenWrap.tscn
-res://Scripts/Scenes/kitchen_wrap.gd
+res://Scripts/Entities/customer.gd
+res://Scripts/Scenes/hall.gd
+res://Scripts/Scenes/kitchen.gd
