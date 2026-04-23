@@ -1,3 +1,4 @@
-res://Scripts/Entities/customer.gd
+res://Scripts/Core/globals.gd
+res://Scripts/Entities/lavash.gd
 res://Scripts/Scenes/hall.gd
 res://Scripts/Scenes/kitchen.gd

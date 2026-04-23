@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ba680ymr73685"
-path="res://.godot/imported/mayo_sauce.png-749b7396c6d9a460e0c263fd721f8ede.ctex"
+uid="uid://cx5t5sl1miaam"
+path="res://.godot/imported/npc_schoolboy.png-1d7352526cb771e61863200f240afd6d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Ingredients/Sauces/mayo_sauce.png"
-dest_files=["res://.godot/imported/mayo_sauce.png-749b7396c6d9a460e0c263fd721f8ede.ctex"]
+source_file="res://Textures/Customers/NPC/npc_schoolboy.png"
+dest_files=["res://.godot/imported/npc_schoolboy.png-1d7352526cb771e61863200f240afd6d.ctex"]
 
 [params]
 

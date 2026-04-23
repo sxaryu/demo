@@ -8,6 +8,7 @@
 [ext_resource type="FontFile" uid="uid://dkqqe2q70t4n3" path="res://Fonts/Exo2-VariableFont_wght.ttf" id="6_koqhg"]
 [ext_resource type="Texture2D" uid="uid://dsoagafawh4u3" path="res://Textures/UI/red_idle_button.png" id="6_loo7a"]
 [ext_resource type="Texture2D" uid="uid://bi1wykrir2j4v" path="res://Textures/UI/red_hover_button.png" id="7_if7li"]
+[ext_resource type="Texture2D" uid="uid://bytf3qnoc50q0" path="res://Textures/UI/settings_icon.png" id="9_cmrfp"]
 
 [sub_resource type="FontVariation" id="FontVariation_cmrfp"]
 base_font = ExtResource("6_koqhg")
@@ -85,3 +86,14 @@ theme_override_font_sizes/font_size = 48
 text = "Выйти"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SettingsButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 1846.0
+offset_top = 1007.0
+offset_right = 1910.0
+offset_bottom = 1071.0
+action_mode = 0
+texture_normal = ExtResource("9_cmrfp")
+ignore_texture_size = true
+stretch_mode = 0

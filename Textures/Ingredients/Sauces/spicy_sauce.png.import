@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgfkrsp0aaa3l"
-path="res://.godot/imported/ketchup_bottle.png-054c0527586d8104601fc0f04e2a7fe4.ctex"
+uid="uid://ccv6hw1ack30m"
+path="res://.godot/imported/spicy_sauce.png-224e5d21bc60dafaa2cb077eb0a187b9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Ingredients/Sauces/ketchup_bottle.png"
-dest_files=["res://.godot/imported/ketchup_bottle.png-054c0527586d8104601fc0f04e2a7fe4.ctex"]
+source_file="res://Textures/Ingredients/Sauces/spicy_sauce.png"
+dest_files=["res://.godot/imported/spicy_sauce.png-224e5d21bc60dafaa2cb077eb0a187b9.ctex"]
 
 [params]
 

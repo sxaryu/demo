@@ -10,10 +10,10 @@ func _ready() -> void:
 	if not is_in_group("database"):
 		add_to_group("database")
 	
-	print("=== DATABASE: старт")
+	GlobalLogger.info("DATABASE: старт")
 	
 	if db:
-		print("=== DATABASE: уже инициализирован")
+		GlobalLogger.info("DATABASE: уже инициализирован")
 		return
 	
 	_init_db()
@@ -22,15 +22,15 @@ func _init_db() -> void:
 	db = SQLite.new()
 	db.path = DB_NAME
 	db.open_db()
-	print("=== DATABASE: БД открыта ===")
+	GlobalLogger.info("DATABASE: БД открыта")
 	
 	_create_tables()
 	_insert_default_data()
-	print("=== DATABASE: Готово ===")
+	GlobalLogger.info("DATABASE: Готово")
 
 # ---------------- Таблицы ----------------
 func _create_tables() -> void:
-	print("Создание таблиц...")
+	GlobalLogger.debug("Создание таблиц...")
 	
 	@warning_ignore("unused_variable")
 	var tables := [
@@ -47,11 +47,11 @@ func _create_tables() -> void:
 	_query("CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY, recipe_id INTEGER NOT NULL, size_id INTEGER NOT NULL, total_weight INTEGER DEFAULT 0, price REAL DEFAULT 0, created_at TEXT DEFAULT CURRENT_TIMESTAMP, status TEXT DEFAULT 'pending')")
 	_query("CREATE TABLE IF NOT EXISTS player_stats (id INTEGER PRIMARY KEY, total_money REAL DEFAULT 0, total_orders INTEGER DEFAULT 0, completed_orders INTEGER DEFAULT 0, playtime_seconds INTEGER DEFAULT 0, last_played TEXT)")
 	
-	print("Таблицы созданы!")
+	GlobalLogger.debug("Таблицы созданы!")
 
 # ---------------- Данные ----------------
 func _insert_default_data() -> void:
-	print("Вставка данных...")
+	GlobalLogger.debug("Вставка данных...")
 	
 	# Ингредиенты
 	_insert_if_not_exists("ingredients", [1, 'chicken', 'Курица', 100, 0.5])
@@ -103,7 +103,7 @@ func _insert_default_data() -> void:
 	# Статистика
 	_insert_if_not_exists("player_stats", [1, 0, 0, 0, 0, ''], true)
 	
-	print("Данные готовы!")
+	GlobalLogger.debug("Данные готовы!")
 
 func _insert_if_not_exists(table: String, values: Array, _is_many_col: bool = false) -> void:
 	# Формируем VALUES (...) из массива

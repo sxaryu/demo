@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://clstpskkbf6bs"]
+[gd_scene load_steps=7 format=3 uid="uid://clstpskkbf6bs"]
 
 [ext_resource type="Texture2D" uid="uid://dw07s64v4suep" path="res://Textures/UI/hall.png" id="1_nhi01"]
 [ext_resource type="Script" uid="uid://b0s1mk5w1nafr" path="res://Scripts/Scenes/hall.gd" id="1_rvgij"]
 [ext_resource type="Texture2D" uid="uid://c55br5skawlj5" path="res://Textures/UI/stoika.png" id="2_owmlv"]
 [ext_resource type="Texture2D" uid="uid://dnnqkh00ujg0n" path="res://Textures/UI/cashbox.png" id="3_rp0x8"]
+[ext_resource type="Texture2D" uid="uid://puixgcuhfjgm" path="res://Textures/UI/money_bar.png" id="5_6r1f7"]
+[ext_resource type="Texture2D" uid="uid://cp880c0mx7dwx" path="res://Textures/UI/money_icon.png" id="6_31tft"]
 
 [node name="Hall" type="Node2D"]
 script = ExtResource("1_rvgij")
@@ -31,39 +33,54 @@ position = Vector2(195.00002, 833.00006)
 scale = Vector2(0.7439965, 0.8055048)
 texture = ExtResource("3_rp0x8")
 
-[node name="MoneyPanel" type="Panel" parent="."]
-z_index = 2
-offset_left = 1596.0
-offset_top = 19.0
-offset_right = 1902.0
-offset_bottom = 102.0
-
-[node name="MoneyCounter" type="Label" parent="MoneyPanel"]
-layout_mode = 0
-offset_left = 9.0
-offset_top = 6.0
-offset_right = 299.0
-offset_bottom = 76.0
-theme_override_font_sizes/font_size = 32
-text = "0₽"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="ShawuSpawnPoint" type="Marker2D" parent="."]
 position = Vector2(1028, 980)
 
 [node name="CustomerSpawnPoint" type="Marker2D" parent="."]
 
-[node name="TimePanel" type="Panel" parent="."]
-offset_left = 29.0
-offset_top = 23.0
-offset_right = 220.0
-offset_bottom = 72.0
+[node name="MoneyPanel" type="TextureRect" parent="."]
+z_index = 2
+offset_left = 1648.0
+offset_right = 1904.0
+offset_bottom = 80.0
+texture = ExtResource("5_6r1f7")
+expand_mode = 1
+
+[node name="MoneyCounter" type="Label" parent="MoneyPanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 8.0
+offset_right = 240.0
+offset_bottom = 64.0
+theme_override_colors/font_color = Color(0.35686275, 0.2901961, 0.14901961, 1)
+theme_override_font_sizes/font_size = 28
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MoneyIcon" type="TextureRect" parent="MoneyPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 72.0
+offset_bottom = 64.0
+texture = ExtResource("6_31tft")
+expand_mode = 1
+
+[node name="TimePanel" type="TextureRect" parent="."]
+offset_left = 48.0
+offset_right = 304.0
+offset_bottom = 80.0
+texture = ExtResource("5_6r1f7")
+expand_mode = 1
 
 [node name="TimeLabel" type="Label" parent="TimePanel"]
 layout_mode = 0
-offset_right = 191.0
-offset_bottom = 49.0
+offset_right = 267.0
+offset_bottom = 73.0
+theme_override_colors/font_color = Color(0.35686275, 0.2901961, 0.14901961, 1)
 theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
+

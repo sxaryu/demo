@@ -10,7 +10,6 @@ extends Node2D
 # --- Переменные ---
 var current_customer: Customer
 var current_shawu: Lavash
-var money: int = 0
 var is_dragging: bool = false
 var drag_offset: Vector2 = Vector2.ZERO
 
@@ -18,28 +17,33 @@ var drag_offset: Vector2 = Vector2.ZERO
 const SCENE_CUSTOMER := preload("res://Scenes/Customer.tscn")
 const SCENE_LAVASH := preload("res://Scenes/Lavash.tscn")
 
+# --- Константы ---
+const BASE_REWARD := 250.0  # Базовая награда
+
 # ---------------- READY ----------------
 func _ready() -> void:
-	money = Globals.total_money
-	money_counter.text = str(money) + "₽"
+	EventBus.money_changed.connect(_on_money_changed)
+	_update_money_display()
 	_update_time_display()
 	
-	# Проверяем, закончился ли рабочий день
 	if Globals.is_work_day_over():
 		_end_work_day()
 		return
 
-	# Сцена всегда пустая - создаём клиента заново
 	if not Globals.last_packed_lavash.is_empty():
-		# Клиент уже сделал заказ и ждёт готовую шаурму
 		_spawn_customer_stand_still()
 		_spawn_packed_shawu()
 	elif Globals.last_order.is_empty():
-		# Новый клиент с дефолтным заказом
 		_spawn_customer_with_order()
 	else:
-		# Восстанавливаем клиента с сохранённым заказом
 		_spawn_customer_with_saved_order()
+
+func _on_money_changed(new_amount: float) -> void:
+	_update_money_display()
+
+func _update_money_display() -> void:
+	if money_counter:
+		money_counter.text = str(snappedf(Globals.total_money, 0.01)) + "₽"
 
 # ---------------- SPAWN ----------------
 func _spawn_customer_with_order() -> void:
@@ -164,30 +168,30 @@ func _deliver_shawu() -> void:
 	tween.tween_callback(_on_delivery_complete)
 
 func _on_delivery_complete() -> void:
+	# Простая выплата без детальной проверки
+	var reward = BASE_REWARD
+	
 	_free_shawu()
-	var reward := Consts.SHAWU_REWARD
-	money += reward
-	Globals.total_money = money
-	money_counter.text = str(money) + "₽"
+	Globals.add_money(reward)
+	_update_money_display()
+	
 	Globals.last_packed_lavash = {}
 	Globals.last_order = {}
 
-	# Добавляем время и засчитываем клиента
 	Globals.add_customer_time()
 	Globals.customers_served += 1
 	_update_time_display()
 	
-	# Проверяем, закончился ли рабочий день
 	if Globals.is_work_day_over():
 		_end_work_day()
 		return
-
+	
 	if is_instance_valid(current_customer):
 		_animate_customer_exit(current_customer)
 		current_customer = null
 
 	await get_tree().create_timer(Consts.EXIT_DELAY).timeout
-	_spawn_customer_with_order()  # Спавним нового клиента с заказом
+	_spawn_customer_with_order()
 
 func _update_time_display() -> void:
 	if time_label:
@@ -236,3 +240,7 @@ func _get_customer_character() -> Sprite2D:
 func _parse_money(text: String) -> int:
 	var num_str = text.split(" ")[0]
 	return num_str.to_int() if num_str.is_valid_int() else 0
+
+func _exit_tree() -> void:
+	if EventBus.money_changed.is_connected(_on_money_changed):
+		EventBus.money_changed.disconnect(_on_money_changed)

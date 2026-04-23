@@ -105,7 +105,7 @@ func _add_time() -> void:
 	print("⏩ Время: ", Globals.get_formatted_time())
 
 func _add_money() -> void:
-	Globals.total_money += 1000
+	Globals.add_money(1000.0)
 	print("💰 Деньги: ", Globals.total_money, "₽")
 
 func _reset_data() -> void:
