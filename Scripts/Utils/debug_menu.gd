@@ -109,12 +109,17 @@ func _add_time() -> void:
 	print("⏩ Время: ", Globals.get_formatted_time())
 
 func _add_money() -> void:
+<<<<<<< HEAD
 	Globals.total_money += 1000
 	EventBus.money_changed.emit(Globals.total_money)
+=======
+	Globals.add_money(1000.0)
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	print("💰 Деньги: ", Globals.total_money, "₽")
 
 func _reset_data() -> void:
 	Globals.clear_data()
+<<<<<<< HEAD
 	EventBus.money_changed.emit(Globals.total_money)
 	print("🔄 Данные сброшены")
 
@@ -130,3 +135,6 @@ func _toggle_zones() -> void:
 		zone_toggle_button.text = "🎨 Зоны: " + ("ВКЛ" if zone_toggle_flag else "ВЫКЛ")
 	
 	print("🎨 Зоны: ", "ВКЛ" if zone_toggle_flag else "ВЫКЛ")
+=======
+	print("🔄 Данные сброшены")
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043

@@ -11,7 +11,10 @@ extends Node2D
 # --- Переменные ---
 var current_customer: Customer
 var current_shawu: Lavash
+<<<<<<< HEAD
 var money: float = 0.0
+=======
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 var is_dragging: bool = false
 var drag_offset: Vector2 = Vector2.ZERO
 
@@ -24,11 +27,19 @@ const SCENE_CUSTOMER := preload("res://Scenes/Customer.tscn")
 const SCENE_LAVASH := preload("res://Scenes/Lavash.tscn")
 const VALIDATOR := preload("res://Scripts/Core/ShawarmaValidator.gd")
 
+# --- Константы ---
+const BASE_REWARD := 250.0  # Базовая награда
+
 # ---------------- READY ----------------
 func _ready() -> void:
+<<<<<<< HEAD
 	# Убеждаемся, что деньги синхронизированы с Globals
 	money = Globals.total_money
 	money_counter.text = str(snappedf(money, 0.01)) + "₽"
+=======
+	EventBus.money_changed.connect(_on_money_changed)
+	_update_money_display()
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	_update_time_display()
 	EventBus.money_changed.connect(_on_money_changed)
 	EventBus.time_changed.connect(_on_time_changed)
@@ -36,24 +47,27 @@ func _ready() -> void:
 	# Подключаем кнопку "Сохранить и выйти"
 	save_and_quit_button.pressed.connect(_on_save_and_quit_pressed)
 	
-	# Проверяем, закончился ли рабочий день
 	if Globals.is_work_day_over():
 		_end_work_day()
 		return
 
+<<<<<<< HEAD
 	# Сцена всегда пустая - создаём клиента заново
 	if _validate_packed_shawu_data():
 		# Клиент уже сделал заказ и ждёт готовую шаурму
 		_spawn_customer_waiting()
+=======
+	if not Globals.last_packed_lavash.is_empty():
+		_spawn_customer_stand_still()
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 		_spawn_packed_shawu()
 	elif Globals.last_order.is_empty():
-		# Новый клиент с дефолтным заказом
 		_spawn_customer_with_order()
 	else:
-		# Восстанавливаем клиента с сохранённым заказом
 		_spawn_customer_with_saved_order()
 
 func _on_money_changed(new_amount: float) -> void:
+<<<<<<< HEAD
 	money = new_amount
 	if money_counter:
 		money_counter.text = str(snappedf(money, 0.01)) + "₽"
@@ -68,6 +82,14 @@ func _on_save_and_quit_pressed() -> void:
 	print("Прогресс сохранён! Выход в главное меню...")
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 	
+=======
+	_update_money_display()
+
+func _update_money_display() -> void:
+	if money_counter:
+		money_counter.text = str(snappedf(Globals.total_money, 0.01)) + "₽"
+
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 # ---------------- SPAWN ----------------
 func _spawn_customer_with_order() -> void:
 	var customer_id := Globals.get_random_customer_id()
@@ -247,6 +269,7 @@ func _deliver_shawu() -> void:
 	_active_delivery_tween.tween_callback(_on_delivery_complete)
 
 func _on_delivery_complete() -> void:
+<<<<<<< HEAD
 	if not is_instance_valid(self):
 		return
 	
@@ -289,34 +312,49 @@ func _on_delivery_complete() -> void:
 			return
 	
 	# Очищаем данные после успешной доставки
+=======
+	# Простая выплата без детальной проверки
+	var reward = BASE_REWARD
+	
+	_free_shawu()
+	Globals.add_money(reward)
+	_update_money_display()
+	
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	Globals.last_packed_lavash = {}
 	Globals.last_order = {}
 	Globals.last_customer_order = {}
 	Globals.last_validation_result = {}
 
-	# Добавляем время и засчитываем клиента
 	Globals.add_customer_time()
 	Globals.customers_served += 1
 	_update_time_display()
 	
-	# Проверяем, закончился ли рабочий день
 	if Globals.is_work_day_over():
 		_is_delivering = false
 		_end_work_day()
 		return
+<<<<<<< HEAD
 		
+=======
+	
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	if is_instance_valid(current_customer):
 		_animate_customer_exit(current_customer)
 		current_customer = null
 
 	# Безопасный await - проверяем валидность узла
 	await get_tree().create_timer(Consts.EXIT_DELAY).timeout
+<<<<<<< HEAD
 	
 	if not is_instance_valid(self):
 		return
 
 	_is_delivering = false
 	_spawn_customer_with_order()  # Спавним нового клиента с заказом
+=======
+	_spawn_customer_with_order()
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 func _update_time_display() -> void:
 	if time_label:
@@ -376,9 +414,15 @@ func _parse_money(text: String) -> int:
 	var num_str = text.split(" ")[0]
 	return num_str.to_int() if num_str.is_valid_int() else 0
 
+<<<<<<< HEAD
 ## Получает множитель чаевых на основе результата валидации
 func _get_tip_multiplier(validation_result: Dictionary) -> float:
 	# Используем метод из валидатора для избежания дублирования
 	var validator_instance := VALIDATOR.new()
 	return validator_instance.get_tip_multiplier(validation_result)
 
+=======
+func _exit_tree() -> void:
+	if EventBus.money_changed.is_connected(_on_money_changed):
+		EventBus.money_changed.disconnect(_on_money_changed)
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043

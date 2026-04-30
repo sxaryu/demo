@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 [gd_scene load_steps=8 format=3 uid="uid://clstpskkbf6bs"]
+=======
+[gd_scene load_steps=7 format=3 uid="uid://clstpskkbf6bs"]
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 [ext_resource type="Texture2D" uid="uid://dw07s64v4suep" path="res://Textures/UI/hall.png" id="1_nhi01"]
 [ext_resource type="Script" uid="uid://b0s1mk5w1nafr" path="res://Scripts/Scenes/hall.gd" id="1_rvgij"]
@@ -6,7 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://dnnqkh00ujg0n" path="res://Textures/UI/cashbox.png" id="3_rp0x8"]
 [ext_resource type="Texture2D" uid="uid://puixgcuhfjgm" path="res://Textures/UI/money_bar.png" id="5_6r1f7"]
 [ext_resource type="Texture2D" uid="uid://cp880c0mx7dwx" path="res://Textures/UI/money_icon.png" id="6_31tft"]
+<<<<<<< HEAD
 [ext_resource type="Texture2D" uid="uid://c2ij0x1w1tk3p" path="res://Textures/UI/time_bar.png" id="7_46l5t"]
+=======
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 [node name="Hall" type="Node2D"]
 script = ExtResource("1_rvgij")
@@ -41,6 +48,7 @@ position = Vector2(1028, 980)
 
 [node name="MoneyPanel" type="TextureRect" parent="."]
 z_index = 2
+<<<<<<< HEAD
 offset_left = 1600.0
 offset_right = 1906.0
 offset_bottom = 104.0
@@ -52,6 +60,20 @@ offset_left = 88.0
 offset_top = 2.0
 offset_right = 290.0
 offset_bottom = 96.0
+=======
+offset_left = 1648.0
+offset_right = 1904.0
+offset_bottom = 80.0
+texture = ExtResource("5_6r1f7")
+expand_mode = 1
+
+[node name="MoneyCounter" type="Label" parent="MoneyPanel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 8.0
+offset_right = 240.0
+offset_bottom = 64.0
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 theme_override_colors/font_color = Color(0.35686275, 0.2901961, 0.14901961, 1)
 theme_override_font_sizes/font_size = 28
 text = "0"
@@ -62,6 +84,7 @@ vertical_alignment = 1
 layout_mode = 0
 offset_left = 16.0
 offset_top = 8.0
+<<<<<<< HEAD
 offset_right = 90.0
 offset_bottom = 85.0
 texture = ExtResource("6_31tft")
@@ -72,6 +95,18 @@ offset_top = 23.0
 offset_right = 301.0
 offset_bottom = 96.0
 texture = ExtResource("7_46l5t")
+=======
+offset_right = 72.0
+offset_bottom = 64.0
+texture = ExtResource("6_31tft")
+expand_mode = 1
+
+[node name="TimePanel" type="TextureRect" parent="."]
+offset_left = 48.0
+offset_right = 304.0
+offset_bottom = 80.0
+texture = ExtResource("5_6r1f7")
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 expand_mode = 1
 
 [node name="TimeLabel" type="Label" parent="TimePanel"]
@@ -82,6 +117,7 @@ theme_override_colors/font_color = Color(0.35686275, 0.2901961, 0.14901961, 1)
 theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 vertical_alignment = 1
+<<<<<<< HEAD
 
 [node name="SaveAndQuitButton" type="Button" parent="."]
 offset_left = 1700.0
@@ -102,3 +138,7 @@ theme_override_font_sizes/font_size = 16
 text = "Сохранить и выйти"
 horizontal_alignment = 1
 vertical_alignment = 1
+=======
+metadata/_edit_lock_ = true
+
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043

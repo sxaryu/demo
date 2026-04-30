@@ -6,6 +6,7 @@ class_name SettingsPanel
 @onready var sfx_slider: HSlider = $PanelContainer/VBoxContainer/SFXContainer/SFXSlider
 @onready var master_slider: HSlider = $PanelContainer/VBoxContainer/MasterContainer/MasterSlider
 @onready var fullscreen_check: CheckButton = $PanelContainer/VBoxContainer/FullscreenContainer/FullscreenCheck
+<<<<<<< HEAD
 @onready var vsync_check: CheckButton = $PanelContainer/VBoxContainer/VSyncContainer/VSyncCheck
 @onready var fps_label: Label = $PanelContainer/VBoxContainer/FPSTargetContainer/FPSTargetLabel
 @onready var fps_slider: HSlider = $PanelContainer/VBoxContainer/FPSTargetContainer/FPSTargetSlider
@@ -14,12 +15,16 @@ class_name SettingsPanel
 @onready var close_button: Button = $PanelContainer/VBoxContainer/CloseButton
 @onready var reset_button: Button = $PanelContainer/VBoxContainer/ResetButton
 @onready var apply_button: Button = $PanelContainer/VBoxContainer/ApplyButton
+=======
+@onready var close_button: Button = $PanelContainer/VBoxContainer/CloseButton
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 # Константы для сохранения
 const MUSIC_VOLUME_KEY := "music_volume"
 const SFX_VOLUME_KEY := "sfx_volume"
 const MASTER_VOLUME_KEY := "master_volume"
 const FULLSCREEN_KEY := "fullscreen"
+<<<<<<< HEAD
 const VSYNC_KEY := "vsync"
 const FPS_LIMIT_KEY := "fps_limit"
 const LANGUAGE_KEY := "language"
@@ -33,10 +38,19 @@ const LANGUAGES := [
 	{"code": "es", "name": "Español"},
 	{"code": "fr", "name": "Français"}
 ]
+=======
+const SETTINGS_FILE := "user://settings.cfg"
+
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 func _ready() -> void:
 	_setup_ui()
 	_load_settings()
+<<<<<<< HEAD
+=======
+	# === ИСПРАВЛЕНО: Принудительно применяем полноэкранный режим при запуске ===
+	_apply_fullscreen_from_settings()
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 func _setup_ui() -> void:
 	# Настраиваем слайдеры
@@ -55,6 +69,7 @@ func _setup_ui() -> void:
 	master_slider.step = 0.01
 	master_slider.value_changed.connect(_on_master_changed)
 	
+<<<<<<< HEAD
 	fps_slider.min_value = 30
 	fps_slider.max_value = 300
 	fps_slider.step = 30
@@ -80,6 +95,13 @@ func _setup_ui() -> void:
 	close_button.pressed.connect(_on_close_pressed)
 	reset_button.pressed.connect(_on_reset_pressed)
 	apply_button.pressed.connect(_on_apply_pressed)
+=======
+	# Настраиваем чекбокс
+	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
+	
+	# Настраиваем кнопку
+	close_button.pressed.connect(_on_close_pressed)
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	
 	# Обновляем отображение значений
 	_update_value_labels()
@@ -93,6 +115,7 @@ func _load_settings() -> void:
 		music_slider.value = config.get_value("audio", MUSIC_VOLUME_KEY, 0.8)
 		sfx_slider.value = config.get_value("audio", SFX_VOLUME_KEY, 0.8)
 		fullscreen_check.button_pressed = config.get_value("display", FULLSCREEN_KEY, false)
+<<<<<<< HEAD
 		vsync_check.button_pressed = config.get_value("display", VSYNC_KEY, true)
 		fps_slider.value = config.get_value("display", FPS_LIMIT_KEY, 60)
 		
@@ -103,6 +126,8 @@ func _load_settings() -> void:
 				break
 		
 		sensitivity_slider.value = config.get_value("controls", SENSITIVITY_KEY, 1.0)
+=======
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	else:
 		# Дефолтные значения
 		master_slider.value = 1.0
@@ -110,6 +135,7 @@ func _load_settings() -> void:
 		sfx_slider.value = 0.8
 		var current_mode = DisplayServer.window_get_mode()
 		fullscreen_check.button_pressed = (current_mode == DisplayServer.WINDOW_MODE_FULLSCREEN)
+<<<<<<< HEAD
 		vsync_check.button_pressed = true
 		fps_slider.value = 60
 		language_option.selected = 0  # Русский по умолчанию
@@ -117,6 +143,24 @@ func _load_settings() -> void:
 	
 	# Применяем настройки
 	_apply_all_settings()
+=======
+	
+	# Применяем настройки звука (полноэкранный режим применится отдельно)
+	_apply_audio_settings()
+
+# === ИСПРАВЛЕНО: Новая функция для применения полноэкранного режима при запуске ===
+func _apply_fullscreen_from_settings() -> void:
+	var should_be_fullscreen: bool = fullscreen_check.button_pressed
+	var current_mode: DisplayServer.WindowMode = DisplayServer.window_get_mode()
+	var is_currently_fullscreen: bool = (current_mode == DisplayServer.WINDOW_MODE_FULLSCREEN)
+	
+	# Применяем только если состояние не совпадает
+	if should_be_fullscreen != is_currently_fullscreen:
+		DisplayServer.window_set_mode(
+			DisplayServer.WINDOW_MODE_FULLSCREEN if should_be_fullscreen 
+			else DisplayServer.WINDOW_MODE_WINDOWED
+		)
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 func _save_settings() -> void:
 	var config: ConfigFile = ConfigFile.new()
@@ -131,6 +175,7 @@ func _save_settings() -> void:
 	config.set_value("audio", MUSIC_VOLUME_KEY, music_slider.value)
 	config.set_value("audio", SFX_VOLUME_KEY, sfx_slider.value)
 	config.set_value("display", FULLSCREEN_KEY, fullscreen_check.button_pressed)
+<<<<<<< HEAD
 	config.set_value("display", VSYNC_KEY, vsync_check.button_pressed)
 	config.set_value("display", FPS_LIMIT_KEY, fps_slider.value)
 	config.set_value("general", LANGUAGE_KEY, language_option.get_item_metadata(language_option.selected))
@@ -142,16 +187,26 @@ func _save_settings() -> void:
 		print("Настройки сохранены")
 	else:
 		push_error("Не удалось сохранить настройки: ", err)
+=======
+	
+	# Сохраняем
+	config.save(path)
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 func _apply_all_settings() -> void:
 	_apply_audio_settings()
 	apply_display_settings()
+<<<<<<< HEAD
 	apply_fps_settings()
 	apply_vsync_settings()
 	apply_sensitivity_settings()
 
 func _apply_audio_settings() -> void:
 	# Применяем громкость
+=======
+
+func _apply_audio_settings() -> void:
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	var bus_master: int = AudioServer.get_bus_index("Master")
 	var bus_music: int = AudioServer.get_bus_index("Music")
 	var bus_sfx: int = AudioServer.get_bus_index("SFX")
@@ -171,6 +226,7 @@ func apply_display_settings() -> void:
 		else DisplayServer.WINDOW_MODE_WINDOWED
 	)
 
+<<<<<<< HEAD
 func apply_fps_settings() -> void:
 	Engine.max_fps = int(fps_slider.value)
 	fps_label.text = str(fps_slider.value) + " FPS"
@@ -192,10 +248,13 @@ func apply_sensitivity_settings() -> void:
 	if has_method("_set_mouse_sensitivity"):
 		call("_set_mouse_sensitivity", sensitivity_slider.value)
 
+=======
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 func _update_value_labels() -> void:
 	$PanelContainer/VBoxContainer/MusicContainer/MusicValue.text = str(int(music_slider.value * 100)) + "%"
 	$PanelContainer/VBoxContainer/SFXContainer/SFXValue.text = str(int(sfx_slider.value * 100)) + "%"
 	$PanelContainer/VBoxContainer/MasterContainer/MasterValue.text = str(int(master_slider.value * 100)) + "%"
+<<<<<<< HEAD
 	$PanelContainer/VBoxContainer/SensitivityContainer/SensitivityValue.text = str(sensitivity_slider.value) + "x"
 	apply_fps_settings()
 
@@ -210,12 +269,27 @@ func _on_sfx_changed(value: float) -> void:
 	_apply_audio_settings()
 
 func _on_master_changed(value: float) -> void:
+=======
+
+# ---------------- СОБЫТИЯ ----------------
+
+func _on_music_changed(_value: float) -> void:
+	_update_value_labels()
+	_apply_audio_settings()
+
+func _on_sfx_changed(_value: float) -> void:
+	_update_value_labels()
+	_apply_audio_settings()
+
+func _on_master_changed(_value: float) -> void:
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	_update_value_labels()
 	_apply_audio_settings()
 
 func _on_fullscreen_toggled(_pressed: bool) -> void:
 	apply_display_settings()
 
+<<<<<<< HEAD
 func _on_vsync_toggled(_pressed: bool) -> void:
 	apply_vsync_settings()
 
@@ -253,3 +327,8 @@ func _on_reset_pressed() -> void:
 func _on_apply_pressed() -> void:
 	_save_settings()
 	print("Настройки применены")
+=======
+func _on_close_pressed() -> void:
+	_save_settings()
+	queue_free()
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043

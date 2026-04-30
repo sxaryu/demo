@@ -70,8 +70,13 @@ func _show_dialog() -> void:
 		
 		_type_text()
 	else:
+<<<<<<< HEAD
 		# Даем стартовые 300 рублей
 		Globals.total_money = 300
+=======
+		# Даем стартовые 300 рублей через новый API
+		Globals.set_money(300.0)
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 		
 		# Бабка будет первым клиентом
 		Globals.last_customer_id = Globals.GRANDMA_ID

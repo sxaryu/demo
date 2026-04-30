@@ -17,8 +17,12 @@ boot_splash/show_image=false
 
 [autoload]
 
-Globals="*res://Scripts/Core/globals.gd"
 EventBus="*res://Scripts/Core/event_bus.gd"
+Globals="*res://Scripts/Core/globals.gd"
+<<<<<<< HEAD
+EventBus="*res://Scripts/Core/event_bus.gd"
+=======
+>>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 Database="*res://Scripts/Core/database.gd"
 Consts="*res://Scripts/Core/consts.gd"
 DebugMenu="*res://Scenes/DebugMenu.tscn"
