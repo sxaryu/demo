@@ -19,10 +19,10 @@ boot_splash/show_image=false
 
 Globals="*res://Scripts/Core/globals.gd"
 EventBus="*res://Scripts/Core/event_bus.gd"
-OrderManager="*res://Scripts/Core/OrderManager.gd"
 Database="*res://Scripts/Core/database.gd"
 Consts="*res://Scripts/Core/consts.gd"
 DebugMenu="*res://Scenes/DebugMenu.tscn"
+GlobalLogger="*res://Scripts/Core/GlobalLogger.gd"
 
 [display]
 

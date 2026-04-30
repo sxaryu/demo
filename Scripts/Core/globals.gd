@@ -10,6 +10,60 @@ var last_lavash_sauce: Array = []
 var last_packed_lavash: Dictionary = {}
 var last_order: Dictionary = {}
 var last_validation_result: Dictionary = {}
+var last_lavash_weights: Dictionary = {}
+
+# --- ГЕТТЕРЫ С КОПИРОВАНИЕМ (защита от мутаций) ---
+func get_last_lavash_ingredients() -> Array:
+	return last_lavash_ingredients.duplicate(true)
+
+func get_last_lavash_sauce() -> Array:
+	return last_lavash_sauce.duplicate(true)
+
+func get_last_packed_lavash() -> Dictionary:
+	return last_packed_lavash.duplicate(true)
+
+func get_last_order() -> Dictionary:
+	return last_order.duplicate(true)
+
+func get_last_lavash_weights() -> Dictionary:
+	return last_lavash_weights.duplicate(true)
+
+func set_last_lavash_data(ingredients: Array, sauce: Array, weights: Dictionary) -> void:
+	last_lavash_ingredients = ingredients.duplicate(true)
+	last_lavash_sauce = sauce.duplicate(true)
+	last_lavash_weights = weights.duplicate(true)
+
+func set_last_packed_lavash(data: Dictionary) -> void:
+	last_packed_lavash = data.duplicate(true)
+
+func set_last_order(order: Dictionary) -> void:
+	last_order = order.duplicate(true)
+
+# --- Money API ---
+func get_money() -> float:
+	return total_money
+
+func set_money(amount: float) -> void:
+	total_money = max(0.0, amount)
+	money_changed.emit(total_money)
+	data_changed.emit()
+
+func add_money(amount: float) -> float:
+	total_money += amount
+	money_changed.emit(total_money)
+	data_changed.emit()
+	return total_money
+
+func spend_money(amount: float) -> bool:
+	if total_money >= amount:
+		total_money -= amount
+		money_changed.emit(total_money)
+		data_changed.emit()
+		return true
+	return false
+
+func has_money(amount: float) -> bool:
+	return total_money >= amount
 
 # --- Таймер рабочего дня ---
 var work_time_minutes: int = 12 * 60  # Начинаем с 12:00 (в минутах от 0:00)
@@ -56,6 +110,7 @@ func _save_full_progress() -> void:
 	save_file.set_value("game", "last_lavash_ingredients", last_lavash_ingredients)
 	save_file.set_value("game", "last_lavash_sauce", last_lavash_sauce)
 	save_file.set_value("game", "last_packed_lavash", last_packed_lavash)
+	save_file.set_value("game", "last_lavash_weights", last_lavash_weights)
 	save_file.set_value("game", "last_validation_result", last_validation_result)
 	
 	var error := save_file.save(SAVE_FILE_PATH)
@@ -78,9 +133,11 @@ func _load_full_progress() -> void:
 		last_lavash_ingredients = []
 		last_lavash_sauce = []
 		last_packed_lavash = {}
-		last_validation_result = {}
+		last_lavash_weights = {}
+	last_lavash_weights = {}
+	last_validation_result = {}
 		return
-	
+
 	var save_file := ConfigFile.new()
 	var error := save_file.load(SAVE_FILE_PATH)
 	
@@ -100,6 +157,7 @@ func _load_full_progress() -> void:
 	last_lavash_ingredients = save_file.get_value("game", "last_lavash_ingredients", [])
 	last_lavash_sauce = save_file.get_value("game", "last_lavash_sauce", [])
 	last_packed_lavash = save_file.get_value("game", "last_packed_lavash", {})
+	last_lavash_weights = save_file.get_value("game", "last_lavash_weights", {})
 	last_validation_result = save_file.get_value("game", "last_validation_result", {})
 	
 	print("=== ЗАГРУЖЕН ПРОГРЕСС ===")
@@ -121,7 +179,7 @@ func _load_default_values() -> void:
 	last_lavash_sauce = []
 	last_packed_lavash = {}
 	last_validation_result = {}
-
+	
 ## Сохраняет только деньги (для совместимости с существующим кодом)
 func save_money() -> void:
 	_save_full_progress()  # Сохраняем весь прогресс вместо одних денег
@@ -178,6 +236,7 @@ func clear_data() -> void:
 	last_lavash_sauce.clear()
 	last_packed_lavash.clear()
 	last_order.clear()
+	last_lavash_weights.clear()
 	last_validation_result.clear()
 	customers_served = 0
 	work_time_minutes = 12 * 60
