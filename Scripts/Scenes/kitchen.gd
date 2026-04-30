@@ -22,7 +22,6 @@ var current_lavash: Lavash
 # --- Соус ---
 var is_sauce_mode := false
 var current_sauce_brush: Texture2D
-var ghost_sauce: Sprite2D
 
 # --- UI ---
 @onready var done_button: Button = $DoneButton
