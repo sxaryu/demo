@@ -29,8 +29,8 @@ func _release() -> void:
 	
 	# Проверяем валидность и наличие лаваша
 	if is_instance_valid(current_lavash):
-		# Передаём текстуру, позицию и вес (по умолчанию 50 грамм)
-		current_lavash.add_ingredient_portion(ingredient_texture, global_position, 50)
+		# Передаём текстуру и позицию
+		current_lavash.add_ingredient_portion(ingredient_texture, global_position)
 	else:
 		# Если отпустили не на лаваше - удаляем
 		queue_free()

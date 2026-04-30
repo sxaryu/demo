@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c0ushf5r3122s"]
 
-[ext_resource type="Script" uid="uid://d20rhdocas7fb" path="res://Scripts/Entities/sauce_bottle.gd" id="2_ue16r"]
+[ext_resource type="Script" uid="uid://d20rhdocas7fb" path="res://Scripts/Core/Entities/sauce_bottle.gd" id="2_ue16r"]
 
 [node name="SauceBottle" type="TextureButton"]
 offset_right = 95.0

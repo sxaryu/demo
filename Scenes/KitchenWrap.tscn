@@ -1,10 +1,25 @@
 [gd_scene load_steps=6 format=3 uid="uid://cg103b6lo0wxo"]
 
-[ext_resource type="Script" uid="uid://c2ydooiq8iori" path="res://Scripts/Scenes/kitchen_wrap.gd" id="1_3y5j7"]
+[ext_resource type="Script" uid="uid://c2ydooiqiori" path="res://Scripts/Scenes/kitchen_wrap.gd" id="1_3y5j7"]
 [ext_resource type="Texture2D" uid="uid://nkdhu5fppwue" path="res://Textures/UI/chillen_summer_cover.jpg" id="2_shtwf"]
 [ext_resource type="Texture2D" uid="uid://cjq5xxmtl6yjc" path="res://Textures/UI/next.png" id="3_shtwf"]
 [ext_resource type="PackedScene" uid="uid://ctnqnb0c2xjya" path="res://Scenes/Grill.tscn" id="4_0hpwd"]
 [ext_resource type="PackedScene" uid="uid://dgywi50tih5yp" path="res://Scenes/PackagingButton.tscn" id="5_0hpwd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_quality_title"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_score"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_quality"]
+font_size = 36
+
+[sub_resource type="LabelSettings" id="LabelSettings_section_title"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_tip"]
+font_size = 28
 
 [node name="KitchenWrap" type="Node2D"]
 script = ExtResource("1_3y5j7")
@@ -46,3 +61,114 @@ scale = Vector2(0.5, 0.5)
 action_mode = 0
 icon = ExtResource("3_shtwf")
 flat = true
+
+[node name="SaveAndQuitButton" type="Button" parent="."]
+offset_left = 1700.0
+offset_top = 1009.0
+offset_right = 1850.0
+offset_bottom = 1130.0
+scale = Vector2(0.4, 0.4)
+flat = true
+
+[node name="Label" type="Label" parent="SaveAndQuitButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_font_sizes/font_size = 20
+text = "Сохранить и выйти"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QualityPanel" type="Panel" parent="."]
+visible = false
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 550.0
+offset_bottom = 600.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QualityPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="TitleLabel" type="Label" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+text = "📋 Результат проверки"
+label_settings = SubResource("LabelSettings_quality_title")
+
+[node name="ScoreLabel" type="Label" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+text = "Балл: 100"
+label_settings = SubResource("LabelSettings_score")
+
+[node name="QualityLabel" type="Label" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+text = "Идеально"
+label_settings = SubResource("LabelSettings_quality")
+
+[node name="HSeparator" type="HSeparator" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="WeightLabel" type="Label" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+text = "🥩 Вес начинки"
+label_settings = SubResource("LabelSettings_section_title")
+
+[node name="WeightProgress" type="ProgressBar" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+max_value = 100.0
+value = 80.0
+show_percentage = false
+
+[node name="DistributionLabel" type="Label" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+text = "📍 Распределение"
+label_settings = SubResource("LabelSettings_section_title")
+
+[node name="DistributionProgress" type="ProgressBar" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+max_value = 100.0
+value = 70.0
+show_percentage = false
+
+[node name="SauceLabel" type="Label" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+text = "🥫 Соус"
+label_settings = SubResource("LabelSettings_section_title")
+
+[node name="SauceProgress" type="ProgressBar" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+max_value = 100.0
+value = 90.0
+show_percentage = false
+
+[node name="HSeparator2" type="HSeparator" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="IssuesLabel" type="Label" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+text = "Проблемы:"
+label_settings = SubResource("LabelSettings_section_title")
+
+[node name="IssuesList" type="RichTextLabel" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+
+[node name="HSeparator3" type="HSeparator" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TipLabel" type="Label" parent="QualityPanel/VBoxContainer"]
+layout_mode = 2
+text = "💰 Чаевые: +100₽"
+label_settings = SubResource("LabelSettings_tip")
+

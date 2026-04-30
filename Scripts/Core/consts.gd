@@ -15,22 +15,20 @@ const EXIT_DELAY := 1.0
 const GRILL_MOVE_DURATION := 0.5
 
 # ==================== LAVASH ====================
-const LAVASH_SCALE := Vector2.ONE
+const LAVASH_SCALE := Vector2(1.0, 1.0)
 
-# Граммовка ингредиентов
+# Граммовка ингредиентов (максимальная)
 const INGREDIENT_MAX_WEIGHTS := {
 	"meat": 100,     # 100г мяса
-	"chicken": 100,  # 100г курицы
 	"tomato": 50,    # 50г помидоров
 	"salad": 50,     # 50г салата
 	"cheese": 30,    # 30г сыра
-	"onion": 25      # 25г лука
+	"onion": 25,     # 25г лука
+	"pepper": 20     # 20г перца
 }
 
 # ==================== KITCHEN ====================
-const POUR_INTERVAL := 0.1  # Сыпать каждые 0.1 секунды
-const POUR_GRAMS := 5       # Грамм за одно сыпание
-const CLICK_GRAMS := 15     # Грамм за клик
+const POUR_INTERVAL := 0.15  
 
 # ==================== KITCHEN WRAP ====================
 const PACKAGE_WIDTH := 195

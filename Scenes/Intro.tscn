@@ -91,3 +91,21 @@ z_index = 1
 position = Vector2(195.00002, 833.00006)
 scale = Vector2(0.7439965, 0.8055048)
 texture = ExtResource("3_d0kpp")
+
+[node name="SaveAndQuitButton" type="Button" parent="."]
+offset_left = 1700.0
+offset_top = 20.0
+offset_right = 1850.0
+offset_bottom = 70.0
+scale = Vector2(0.8, 0.8)
+flat = true
+
+[node name="Label" type="Label" parent="SaveAndQuitButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_font_sizes/font_size = 16
+text = "Сохранить и выйти"
+horizontal_alignment = 1
+vertical_alignment = 1

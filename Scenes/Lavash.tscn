@@ -1,8 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dit27r3wjirvi"]
 
-[ext_resource type="Script" uid="uid://n1emunh8p8a1" path="res://Scripts/Entities/lavash.gd" id="1_a6uqy"]
+[ext_resource type="Script" uid="uid://n1emunh8p8a1" path="res://Scripts/Core/Entities/lavash.gd" id="1_a6uqy"]
 [ext_resource type="Texture2D" uid="uid://dbux45ih8g8dv" path="res://Textures/Ingredients/lavash.png" id="1_vqtja"]
-
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a6uqy"]
 radius = 222.91292
@@ -11,11 +10,11 @@ radius = 222.91292
 script = ExtResource("1_a6uqy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(1.1, 1.1)
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("1_vqtja")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(0.8798276, 0.8798276)
+scale = Vector2(1.15, 1.15)
 shape = SubResource("CircleShape2D_a6uqy")
 
 [node name="Ingredients" type="Node2D" parent="."]

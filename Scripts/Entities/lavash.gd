@@ -3,24 +3,14 @@ class_name Lavash
 
 # --- Сигналы ---
 signal fried(lavash: Lavash)
-signal ingredient_added(type: String, grams: int, max_grams: int)
+signal ingredient_added(ingredient_type: String, global_position: Vector2)
 
 # --- Переменные ---
 var ingredients: Array[Node2D] = []
 var is_active := true
 var is_fried: bool = false
 var is_on_grill: bool = false
-
-# --- Граммовка ---
-var ingredients_weight: Dictionary = {}  # {"meat": 0, "tomato": 0, ...}
-var ingredient_max_weight: Dictionary = {
-	"meat": 100,      # 100г мяса
-	"chicken": 100,   # 100г курицы
-	"tomato": 50,     # 50г помидоров
-	"salad": 50,      # 50г салата
-	"cheese": 30,     # 30г сыра
-	"onion": 25       # 25г лука
-}
+var show_zone_debug := false  
 
 # --- Узлы ---
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
@@ -29,9 +19,14 @@ var ingredient_max_weight: Dictionary = {
 @onready var sauce_layer: Node2D = $SauceViewport/SauceLayer
 @onready var sauce_sprite: Sprite2D = $SauceResult
 
+# --- Соус ---
+var _last_sauce_pos: Vector2 = Vector2.ZERO
+var _last_sauce_payment_pos: Vector2 = Vector2.ZERO
+const MIN_SAUCE_DISTANCE := 1  # Минимальное расстояние между мазками
+const SAUCE_PAYMENT_DISTANCE := 30.0  # Минимальное расстояние между списаниями денег
+
 # --- Константы ---
 const TEXTURE_FRIED := preload("res://Textures/Kitchen/fried_shawu.png")
-const PORTION_GRAMS := 5
 
 func _ready() -> void:
 	add_to_group("lavash")
@@ -45,6 +40,9 @@ func _ready() -> void:
 	sauce_layer.z_index = 0
 	ingredients_container.z_index = 1
 
+	# Включаем _process для перерисовки зон
+	set_process(true)
+
 func _on_mouse_entered() -> void:
 	var kitchen = get_tree().current_scene
 	if kitchen and kitchen.has_method("is_holding_ingredient"):
@@ -54,13 +52,58 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	modulate = Color.WHITE
 
+func _process(_delta: float) -> void:
+	queue_redraw()
+
+func _draw() -> void:
+	if not show_zone_debug:
+		return
+
+	# Рисуем линии зон (визуализация для отладки)
+	var sprite = get_node_or_null("Sprite2D")
+	if not sprite or not sprite.texture:
+		return
+	
+	var texture_height = float(sprite.texture.get_height())
+	var texture_width = float(sprite.texture.get_width())
+	
+	# Получаем масштаб спрайта
+	var sprite_scale = sprite.scale
+	var scaled_width = texture_width * sprite_scale.x
+	var scaled_height = texture_height * sprite_scale.y
+	
+	# Центр спрайта в локальных координатах лаваша (центр Area2D = 0,0)
+	var _sprite_center = Vector2.ZERO
+	
+	# Центры зон (Y растёт вниз) - относительно центра спрайта
+	var zone_top_y = scaled_height * 0.33
+	var zone_middle_y = scaled_height * 0.66
+	
+	# Цвета зон
+	var top_color = Color(1.0, 0.3, 0.3, 0.3)    # Красный (верх)
+	var middle_color = Color(1.0, 0.5, 0.3, 0.3) # Оранжевый (середина)
+	var bottom_color = Color(1.0, 0.7, 0.3, 0.3) # Оранжево-жёлтый (низ)
+	
+	# Верхняя точка спрайта относительно центра
+	var top_y = -scaled_height / 2.0
+	var center_x = 0.0
+	
+	# Рисуем полупрозрачные зоны
+	draw_rect(Rect2(Vector2(center_x - scaled_width/2, top_y), Vector2(scaled_width, zone_top_y)), top_color)
+	draw_rect(Rect2(Vector2(center_x - scaled_width/2, top_y + zone_top_y), Vector2(scaled_width, zone_middle_y - zone_top_y)), middle_color)
+	draw_rect(Rect2(Vector2(center_x - scaled_width/2, top_y + zone_middle_y), Vector2(scaled_width, scaled_height - zone_middle_y)), bottom_color)
+	
+	# Рисуем линии границ
+	draw_line(Vector2(center_x - scaled_width/2, top_y + zone_top_y), Vector2(center_x + scaled_width/2, top_y + zone_top_y), Color.WHITE, 3.0, true)
+	draw_line(Vector2(center_x - scaled_width/2, top_y + zone_middle_y), Vector2(center_x + scaled_width/2, top_y + zone_middle_y), Color.WHITE, 3.0, true)
+
 func contains_global_point(global_point: Vector2) -> bool:
 	if collision_shape.shape is CircleShape2D:
 		var local_pos = to_local(global_point)
 		return local_pos.length() <= collision_shape.shape.radius
 	return false
 
-# ---------------- ИНГРЕДИЕНТЫ (Старый метод для совместимости) ----------------
+# ---------------- ИНГРЕДИЕНТЫ ----------------
 
 func add_ingredient(ingredient_scene: PackedScene, ingredient_texture: Texture2D, global_pos: Vector2) -> Node2D:
 	if not is_active:
@@ -77,40 +120,27 @@ func add_ingredient(ingredient_scene: PackedScene, ingredient_texture: Texture2D
 	ingredient.z_index = ingredients.size() + 1
 	ingredients.append(ingredient)
 	
-	# Добавляем граммы (одно нажатие = полная порция)
-	var type = _get_ingredient_type(ingredient_texture)
-	var max_grams = ingredient_max_weight.get(type, 50)
-	add_weight(type, max_grams)
-	
 	return ingredient
 
-# ---------------- ГРАММОВКА (Новый метод) ----------------
-
-func add_ingredient_portion(ingredient_texture: Texture2D, global_pos: Vector2, grams: int = PORTION_GRAMS) -> void:
+func add_ingredient_portion(ingredient_texture: Texture2D, global_pos: Vector2) -> void:
 	if not is_active:
 		return
-
+	
 	var type = _get_ingredient_type(ingredient_texture)
-	var current_weight = ingredients_weight.get(type, 0)
-	var max_grams = ingredient_max_weight.get(type, 50)
-	
-	# Не превышаем максимум
-	if current_weight >= max_grams:
-		return
-	
-	# Добавляем порцию
-	add_weight(type, grams)
 	
 	# Визуальный эффект - добавляем маленький спрайт (как соус)
 	var portion := Sprite2D.new()
 	portion.texture = ingredient_texture
 	portion.position = to_local(global_pos)
 	
-	# Рандомизация размера (от 0.25 до 0.35)
+	# Сохраняем тип ингредиента для валидации
+	portion.set_meta("ingredient_type", type)
+	
+	# Рандомизация размера
 	var random_scale = randf_range(0.9, 1.2)
 	portion.scale = Vector2(random_scale, random_scale)
 	
-	# Рандомизация поворота (от -30 до 30 градусов)
+	# Рандомизация поворота
 	portion.rotation_degrees = randf_range(-90, 90)
 	
 	portion.modulate = Color(1, 1, 1, 0.8)
@@ -120,32 +150,8 @@ func add_ingredient_portion(ingredient_texture: Texture2D, global_pos: Vector2, 
 	ingredients_container.add_child(portion)
 	ingredients.append(portion)
 
-func add_weight(type: String, grams: int) -> void:
-	if not ingredients_weight.has(type):
-		ingredients_weight[type] = 0
-	
-	ingredients_weight[type] += grams
-	
-	# Ограничиваем максимумом
-	var max_grams = ingredient_max_weight.get(type, 50)
-	ingredients_weight[type] = min(ingredients_weight[type], max_grams)
-	
-	# Отправляем сигнал для UI
-	ingredient_added.emit(type, ingredients_weight[type], max_grams)
-
-func get_weight(type: String) -> int:
-	return ingredients_weight.get(type, 0)
-
-func get_max_weight(type: String) -> int:
-	return ingredient_max_weight.get(type, 50)
-
-func is_ingredient_complete(type: String) -> bool:
-	var current = ingredients_weight.get(type, 0)
-	var max_grams = ingredient_max_weight.get(type, 50)
-	return current >= max_grams
-
-func get_all_weights() -> Dictionary:
-	return ingredients_weight.duplicate()
+	# Сигнал для UI
+	ingredient_added.emit(type, global_pos)
 
 # ---------------- ТЕХНОВ ----------------
 
@@ -166,21 +172,66 @@ func _get_ingredient_type(texture: Texture2D) -> String:
 		return "tomato"
 	elif "salad" in path:
 		return "salad"
+	elif "pepper" in path:
+		return "pepper"
 	return "unknown"
 
-# ---------------- СОУС (оставляем как было) ----------------
+# ---------------- СОУС (УЛУЧШЕННЫЙ) ----------------
 
 func paint_sauce(global_pos: Vector2, brush_texture: Texture2D) -> void:
+	if not is_instance_valid(brush_texture):
+		return
+	
 	var local = to_local(global_pos)
+	var viewport_center = Vector2(sauce_viewport.size) / 2
+	var draw_pos = local + viewport_center
+	
+	# Первая точка или сброс состояния
+	if _last_sauce_pos == Vector2.ZERO:
+		_add_sauce_brush(brush_texture, draw_pos)
+		_last_sauce_pos = draw_pos
+		return
+	
+	# Интерполяция между точками для плавной линии
+	var distance = draw_pos.distance_to(_last_sauce_pos)
+	
+	if distance > MIN_SAUCE_DISTANCE:
+		var steps = max(1, int(distance / MIN_SAUCE_DISTANCE))
+		
+		for i in range(1, steps + 1):
+			var t = float(i) / float(steps)
+			var interp_pos = _last_sauce_pos.lerp(draw_pos, t)
+			_add_sauce_brush(brush_texture, interp_pos)
+	
+	# Всегда добавляем текущую точку для плотного покрытия
+	_add_sauce_brush(brush_texture, draw_pos)
+	_last_sauce_pos = draw_pos
+
+func _add_sauce_brush(brush_texture: Texture2D, pos: Vector2) -> void:
 	var brush := Sprite2D.new()
-	
 	brush.texture = brush_texture
-	brush.position = local + Vector2(sauce_viewport.size) / 2
+	brush.position = pos
 	brush.centered = true
-	brush.modulate = Color(1, 1, 1, 0.5)
-	brush.material = _get_blend_material()
 	
-	sauce_layer.add_child(brush)
+	# Визуальные вариации для натуральности
+	brush.modulate = Color(1, 1, 1, randf_range(0.4, 0.7))
+	brush.rotation = randf_range(-0.3, 0.3)
+	var random_scale = randf_range(0.7, 1.0)
+	brush.scale = Vector2(random_scale, random_scale)
+	
+	brush.material = _get_blend_material()
+	sauce_layer.add_child(brush) 
+
+func reset_sauce_state() -> void:
+	_last_sauce_pos = Vector2.ZERO
+	_last_sauce_payment_pos = Vector2.ZERO
+
+func should_charge_sauce() -> bool:
+	var distance = _last_sauce_pos.distance_to(_last_sauce_payment_pos)
+	if distance >= SAUCE_PAYMENT_DISTANCE:
+		_last_sauce_payment_pos = _last_sauce_pos
+		return true
+	return false
 
 func _get_blend_material() -> CanvasItemMaterial:
 	var mat := CanvasItemMaterial.new()
@@ -193,7 +244,13 @@ func get_ingredients_data() -> Array:
 	var result := []
 	for ingredient in ingredients:
 		if is_instance_valid(ingredient):
-			var sprite = ingredient.get_node_or_null("Sprite2D")
+			# Ингредиент может быть Node2D с Sprite2D внутри или сам Sprite2D
+			var sprite: Sprite2D = null
+			if ingredient is Sprite2D:
+				sprite = ingredient as Sprite2D
+			else:
+				sprite = ingredient.get_node_or_null("Sprite2D") as Sprite2D
+			
 			if sprite and sprite.texture:
 				result.append({
 					"texture": sprite.texture,
@@ -226,7 +283,12 @@ func clear() -> void:
 		if is_instance_valid(i):
 			i.queue_free()
 	ingredients.clear()
-	ingredients_weight.clear()
+	
+	# Очищаем соус
+	for child in sauce_layer.get_children():
+		child.queue_free()
+	
+	reset_sauce_state()
 
 func reset() -> void:
 	clear()
@@ -237,6 +299,10 @@ func reset() -> void:
 
 func get_ingredient_count() -> int:
 	return ingredients.size()
+
+func set_zone_debug(enabled: bool) -> void:
+	show_zone_debug = enabled
+	queue_redraw()
 
 # ---------------- ЖАРКА ----------------
 

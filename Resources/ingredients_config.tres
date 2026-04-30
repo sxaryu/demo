@@ -1,0 +1,48 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://ckingredientsconfigtres123"]
+
+[ext_resource type="Script" uid="uid://ckingredientsconfig123" path="res://Scripts/Core/resources/ingredients_config.gd" id="1_script"]
+
+[resource]
+lavash_cost = 15
+lavash_weight = 100
+lavash_texture_path = "res://Textures/Ingredients/lavash.png"
+
+chicken_cost = 8
+chicken_weight = 30
+chicken_texture_path = "res://Textures/Ingredients/Pieces/chicken_piece.png"
+
+meat_cost = 10
+meat_weight = 30
+meat_texture_path = "res://Textures/Ingredients/Pieces/meat_piece.png"
+
+tomato_cost = 2
+tomato_weight = 20
+tomato_texture_path = "res://Textures/Ingredients/Pieces/tomato_piece.png"
+
+salad_cost = 2
+salad_weight = 20
+salad_texture_path = "res://Textures/Ingredients/Pieces/salad_piece.png"
+
+cheese_cost = 3
+cheese_weight = 15
+cheese_texture_path = "res://Textures/Ingredients/Pieces/cheese_piece.png"
+
+onion_cost = 2
+onion_weight = 10
+onion_texture_path = "res://Textures/Ingredients/Pieces/onion_piece.png"
+
+pepper_cost = 2
+pepper_weight = 10
+pepper_texture_path = "res://Textures/Ingredients/Pieces/pepper_piece.png"
+
+white_sauce_cost = 1
+white_sauce_weight = 10
+white_sauce_texture_path = "res://Textures/Ingredients/Sauces/mayo_sauce.png"
+
+red_sauce_cost = 1
+red_sauce_weight = 10
+red_sauce_texture_path = "res://Textures/Ingredients/Sauces/ketchup_bottle.png"
+
+spicy_sauce_cost = 1
+spicy_sauce_weight = 10
+spicy_sauce_texture_path = "res://Textures/Ingredients/Sauces/spicy_sauce.png"

@@ -4,15 +4,17 @@ extends Control
 @onready var dialog_label: Label = $SpeechBubble/DialogLabel
 @onready var next_button: Button = $SpeechBubble/NextButton
 @onready var bubble: NinePatchRect = $SpeechBubble
+@onready var save_and_quit_button: Button = $SaveAndQuitButton
 
 var dialogs := [
-	"Здравствуй, дорогой дорогой мой!",
+	"Здравствуй, дорогой мой!",
 	"Мне нужно срочно уехать на недельку по важным делам...",
 	"Не мог бы ты присмотреть за моим маленьким ресторанчиком, в качестве стажировки?",
 	"Главное - не потеряй наших клиентов, они очень важные!",
+	"Вот, держи 300 рублей на старт. Это как бы мои личные чаевые тебе!",
+	"Ты сможешь тратить их на покупку ингредиентов, чтобы делать вкусные заказы.",
 	"Я вернусь и обязательно награжу тебя!",
-	"Удачи тебе, у тебя всё получится!", 
-	"А сейчас предлагаю потренироваться на мне, прими у меня заказ!"
+	"Удачи тебе, у тебя всё получится!"
 ]
 
 var current_index := 0
@@ -23,6 +25,7 @@ var _base_y := 0.0
 
 func _ready() -> void:
 	next_button.pressed.connect(_on_next_pressed)
+	save_and_quit_button.pressed.connect(_on_save_and_quit_pressed)
 	grandma_sprite.modulate.a = 0.0
 	bubble.modulate.a = 0.0
 	bubble.scale = Vector2(0.8, 0.8)
@@ -63,10 +66,13 @@ func _show_dialog() -> void:
 		next_button.visible = false
 		
 		if current_index == dialogs.size() - 1:
-			next_button.text = "Начать!"
+			next_button.text = "Открыть ресторан!"
 		
 		_type_text()
 	else:
+		# Даем стартовые 300 рублей
+		Globals.total_money = 300
+		
 		# Бабка будет первым клиентом
 		Globals.last_customer_id = Globals.GRANDMA_ID
 		get_tree().change_scene_to_file("res://Scenes/Hall.tscn")
@@ -84,3 +90,9 @@ func _type_text() -> void:
 func _on_next_pressed() -> void:
 	current_index += 1
 	_show_dialog()
+
+func _on_save_and_quit_pressed() -> void:
+	# Сохраняем текущий прогресс
+	Globals._save_full_progress()
+	print("Прогресс сохранён! Выход в главное меню...")
+	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")

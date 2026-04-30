@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dbya4ag345j41"]
 
-[ext_resource type="Script" uid="uid://dh5lvydb26w33" path="res://Scripts/Entities/customer.gd" id="1_r206j"]
+[ext_resource type="Script" uid="uid://dh5lvydb26w33" path="res://Scripts/Core/Entities/customer.gd" id="1_r206j"]
 [ext_resource type="Texture2D" uid="uid://e0jgx0gvwmkq" path="res://Textures/Customers/NPC/npc_grandma.png" id="2_r206j"]
 [ext_resource type="Texture2D" uid="uid://bqxj4wwgo7q5o" path="res://Textures/UI/chat.png" id="3_kkvav"]
 

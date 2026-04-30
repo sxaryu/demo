@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://b0eqjvdxpmian" path="res://Scripts/UI/lavash_button.gd" id="2_tq1ww"]
 [ext_resource type="PackedScene" uid="uid://dit27r3wjirvi" path="res://Scenes/Lavash.tscn" id="3_l3ecn"]
 
-
 [node name="LavashButton" type="TextureButton"]
 offset_left = -37.999992
 offset_top = 1377.0

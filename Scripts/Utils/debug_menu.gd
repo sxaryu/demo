@@ -2,6 +2,8 @@ extends CanvasLayer
 
 var panel: Panel
 var visible_flag := false
+var zone_toggle_flag := false
+var zone_toggle_button: Button
 
 func _ready() -> void:
 	layer = 100
@@ -63,6 +65,8 @@ func _create_ui() -> void:
 	vbox.add_child(_create_button("⏩ +2ч15м", _add_time))
 	vbox.add_child(_create_button("💰 +1000 денег", _add_money))
 	vbox.add_child(_create_button("🔄 Сброс данных", _reset_data))
+	zone_toggle_button = _create_button("🎨 Зоны: ВЫКЛ", _toggle_zones)
+	vbox.add_child(zone_toggle_button)
 	
 	panel.add_child(vbox)
 	add_child(panel)
@@ -106,8 +110,23 @@ func _add_time() -> void:
 
 func _add_money() -> void:
 	Globals.total_money += 1000
+	EventBus.money_changed.emit(Globals.total_money)
 	print("💰 Деньги: ", Globals.total_money, "₽")
 
 func _reset_data() -> void:
 	Globals.clear_data()
+	EventBus.money_changed.emit(Globals.total_money)
 	print("🔄 Данные сброшены")
+
+func _toggle_zones() -> void:
+	zone_toggle_flag = not zone_toggle_flag
+	var lavash_nodes = get_tree().get_nodes_in_group("lavash")
+	for node in lavash_nodes:
+		if node.has_method("set_zone_debug"):
+			node.set_zone_debug(zone_toggle_flag)
+	
+	# Обновляем текст кнопки
+	if zone_toggle_button:
+		zone_toggle_button.text = "🎨 Зоны: " + ("ВКЛ" if zone_toggle_flag else "ВЫКЛ")
+	
+	print("🎨 Зоны: ", "ВКЛ" if zone_toggle_flag else "ВЫКЛ")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://doox7smqlgs1x"]
+[gd_scene load_steps=11 format=3 uid="uid://doox7smqlgs1x"]
 
 [ext_resource type="Script" uid="uid://buqn0uw4jtulr" path="res://Scripts/Scenes/main_menu.gd" id="1_tt5f1"]
 [ext_resource type="Texture2D" uid="uid://boxsaa5aty5dt" path="res://Textures/UI/menu_background.png" id="2_853f1"]
@@ -8,6 +8,7 @@
 [ext_resource type="FontFile" uid="uid://dkqqe2q70t4n3" path="res://Fonts/Exo2-VariableFont_wght.ttf" id="6_koqhg"]
 [ext_resource type="Texture2D" uid="uid://dsoagafawh4u3" path="res://Textures/UI/red_idle_button.png" id="6_loo7a"]
 [ext_resource type="Texture2D" uid="uid://bi1wykrir2j4v" path="res://Textures/UI/red_hover_button.png" id="7_if7li"]
+[ext_resource type="Texture2D" uid="uid://bytf3qnoc50q0" path="res://Textures/UI/settings_icon.png" id="9_cmrfp"]
 
 [sub_resource type="FontVariation" id="FontVariation_cmrfp"]
 base_font = ExtResource("6_koqhg")
@@ -40,12 +41,35 @@ offset_bottom = 723.0
 texture = ExtResource("3_xim88")
 metadata/_edit_lock_ = true
 
-[node name="PlayButton" type="TextureButton" parent="."]
+[node name="ContinueButton" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 104.0
 offset_top = 672.0
 offset_right = 644.0
 offset_bottom = 783.0
+action_mode = 0
+texture_normal = ExtResource("4_koqhg")
+texture_hover = ExtResource("5_cmrfp")
+
+[node name="Label" type="Label" parent="ContinueButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.99300003
+anchor_bottom = 1.0
+offset_right = -0.22003174
+offset_bottom = 1.0
+theme_override_fonts/font = SubResource("FontVariation_cmrfp")
+theme_override_font_sizes/font_size = 48
+text = "Продолжить"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 802.0
+offset_right = 644.0
+offset_bottom = 913.0
 action_mode = 0
 texture_normal = ExtResource("4_koqhg")
 texture_hover = ExtResource("5_cmrfp")
@@ -66,9 +90,9 @@ vertical_alignment = 1
 [node name="QuitButton" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 104.0
-offset_top = 832.0
+offset_top = 932.0
 offset_right = 644.0
-offset_bottom = 943.0
+offset_bottom = 1043.0
 action_mode = 0
 texture_normal = ExtResource("6_loo7a")
 texture_hover = ExtResource("7_if7li")
@@ -85,3 +109,14 @@ theme_override_font_sizes/font_size = 48
 text = "Выйти"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SettingsButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 1846.0
+offset_top = 1007.0
+offset_right = 1910.0
+offset_bottom = 1071.0
+action_mode = 0
+texture_normal = ExtResource("9_cmrfp")
+ignore_texture_size = true
+stretch_mode = 0
