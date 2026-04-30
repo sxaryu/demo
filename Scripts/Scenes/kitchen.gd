@@ -35,18 +35,15 @@ var current_sauce_type: String = ""  # 🆕 Тип текущего соуса
 <<<<<<< HEAD
 # --- Защита от повторных действий ---
 var _is_changing_scene: bool = false
-var money: float = 0.0
-=======
->>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
 # ---------------- READY ----------------
 func _ready() -> void:
 	add_to_group("kitchen")
-<<<<<<< HEAD
-	money = Globals.total_money
-=======
-	
+	done_button.pressed.connect(_on_done_pressed)
+	save_and_quit_button.pressed.connect(_on_save_and_quit_pressed)
+	lavash_button.pressed.connect(_on_lavash_button_pressed)
 	EventBus.money_changed.connect(_on_money_changed)
+	_init_pour_timer()
 	_update_money_display()
 
 >>>>>>> c33e8377b6fd006e3771648747071697b41d5043
@@ -57,28 +54,20 @@ func _ready() -> void:
 	_init_pour_timer()
 	_update_money_display()
 
-func _on_money_changed(new_amount: float) -> void:
-	money = new_amount
+func _on_money_changed(_new_amount: float) -> void:
 	_update_money_display()
 
 func _update_money_display() -> void:
 	if money_counter:
-		money_counter.text = str(snappedf(money, 0.01)) + "₽"
+		money_counter.text = str(snappedf(Globals.total_money, 0.01)) + "₽"
 
 # ---------------- EXIT ----------------
 func _exit_tree() -> void:
-	# Отключаем сигналы
 	if is_instance_valid(current_lavash):
 		if current_lavash.ingredient_added.is_connected(_on_ingredient_added):
 			current_lavash.ingredient_added.disconnect(_on_ingredient_added)
-	
 	if EventBus.money_changed.is_connected(_on_money_changed):
 		EventBus.money_changed.disconnect(_on_money_changed)
-	
-	# Сохраняем баланс денег
-	Globals.total_money = money
-	
-	# Очищаем таймер при выходе со сцены
 	if pour_timer:
 		pour_timer.stop()
 		pour_timer.timeout.disconnect(_on_pour_timer)
@@ -199,13 +188,10 @@ func _try_place_ingredient() -> void:
 		if ingredient_type == "unknown":
 			push_warning("Неизвестный ингредиент: %s" % current_ingredient_texture.resource_path)
 		
-		if money >= cost:
+		if Globals.spend_money(cost):
 			current_lavash.add_ingredient_portion(current_ingredient_texture, mouse_pos)
-			money -= cost
-			Globals.total_money = money
-			# НЕ сохраняем при каждом ингредиенте - это вызывает лаги!
 			EventBus.ingredient_purchased.emit(ingredient_type, cost, mouse_pos)
-			EventBus.money_changed.emit(money)
+			EventBus.money_changed.emit(Globals.total_money)
 			_update_money_display()
 		else:
 			push_warning("Недостаточно денег для добавления ингредиента!")
@@ -247,13 +233,10 @@ func _on_pour_timer() -> void:
 		
 		print("Насыпание: %s, Цена: %.2f₽" % [ingredient_type, cost])
 		
-		if money >= cost:
+		if Globals.spend_money(cost):
 			current_lavash.add_ingredient_portion(current_ingredient_texture, mouse_pos)
-			money -= cost
-			Globals.total_money = money
-			# НЕ сохраняем при каждом ингредиенте - это вызывает лаги!
 			EventBus.ingredient_purchased.emit(ingredient_type, cost, mouse_pos)
-			EventBus.money_changed.emit(money)
+			EventBus.money_changed.emit(Globals.total_money)
 			_update_money_display()
 		else:
 			_stop_pouring()
@@ -292,53 +275,16 @@ func _on_ingredient_added(_ingredient_type: String, _global_position: Vector2) -
 	pass
 
 func _on_save_and_quit_pressed() -> void:
-	# Сохраняем текущий баланс денег
-	Globals.total_money = money
 	Globals._save_full_progress()
-	print("Прогресс сохранён! Выход в главное меню...")
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 
 func _on_done_pressed() -> void:
-	# Защита от повторного нажатия
-	if _is_changing_scene:
+	if _is_changing_scene or not is_instance_valid(current_lavash):
 		return
-
-	if not is_instance_valid(current_lavash):
-		print("Сначала создай лаваш")
-=======
-	current_lavash.ingredient_added.connect(_on_ingredient_added)
-
-func _on_done_pressed() -> void:
-	if not current_lavash:
-		GlobalLogger.info("Сначала создай лаваш")
->>>>>>> c33e8377b6fd006e3771648747071697b41d5043
-		return
-
 	_is_changing_scene = true
-	
 	Globals.last_lavash_ingredients = current_lavash.get_ingredients_data()
 	Globals.last_lavash_sauce = current_lavash.get_sauce_data()
-	
-<<<<<<< HEAD
-	# Сохраняем текущий баланс денег
-	Globals.total_money = money
-	Globals._save_full_progress()  # Сохраняем только при переходе
-	
-	print("=== СОХРАНЕНИЕ ШАУРМЫ ===")
-	print("Ингредиентов: ", Globals.last_lavash_ingredients.size())
-	print("Соуса: ", Globals.last_lavash_sauce.size())
-	print("Остаток денег: %.2f₽" % money)
-	
-	# Выводим информацию о первых 3 ингредиентах для отладки
-	for i in range(min(3, Globals.last_lavash_ingredients.size())):
-		var ing_data = Globals.last_lavash_ingredients[i]
-		print("  Ингредиент %d: %s" % [i, ing_data.get("texture_path", "unknown")])
-=======
-	GlobalLogger.debug("Сохранено ингредиентов: %d" % Globals.last_lavash_ingredients.size())
-	GlobalLogger.debug("Вес ингредиентов: %s" % str(Globals.last_lavash_weights))
-	GlobalLogger.debug("Остаток денег: %.2f₽" % Globals.total_money)
->>>>>>> c33e8377b6fd006e3771648747071697b41d5043
-
+	Globals._save_full_progress()
 	_cleanup_state()
 	get_tree().change_scene_to_packed(SCENE_KITCHEN_WRAP)
 	current_lavash = null
@@ -407,16 +353,11 @@ func _handle_motion(event: InputEventMouseMotion) -> void:
 		if current_lavash.contains_global_point(event.position):
 <<<<<<< HEAD
 			current_lavash.paint_sauce(event.position, current_sauce_brush)
-			# Списываем деньги за соус только при достаточном расстоянии
 			if current_lavash.should_charge_sauce():
-				var cost: float = Globals.get_ingredient_cost("white_sauce", 0)  # Базовая цена соуса
-				if money >= cost:
-					money -= cost
-					Globals.total_money = money
-					# НЕ сохраняем при каждом мазке соуса - это вызывает лаги!
+				var cost: float = Globals.get_ingredient_cost("white_sauce", 0)
+				if Globals.spend_money(cost):
 					_update_money_display()
 		else:
-			# Сбрасываем при выходе за пределы лаваша
 			current_lavash.reset_sauce_state()
 
 =======

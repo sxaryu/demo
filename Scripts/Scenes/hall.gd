@@ -11,10 +11,6 @@ extends Node2D
 # --- Переменные ---
 var current_customer: Customer
 var current_shawu: Lavash
-<<<<<<< HEAD
-var money: float = 0.0
-=======
->>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 var is_dragging: bool = false
 var drag_offset: Vector2 = Vector2.ZERO
 
@@ -32,14 +28,7 @@ const BASE_REWARD := 250.0  # Базовая награда
 
 # ---------------- READY ----------------
 func _ready() -> void:
-<<<<<<< HEAD
-	# Убеждаемся, что деньги синхронизированы с Globals
-	money = Globals.total_money
-	money_counter.text = str(snappedf(money, 0.01)) + "₽"
-=======
-	EventBus.money_changed.connect(_on_money_changed)
 	_update_money_display()
->>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 	_update_time_display()
 	EventBus.money_changed.connect(_on_money_changed)
 	EventBus.time_changed.connect(_on_time_changed)
@@ -47,39 +36,32 @@ func _ready() -> void:
 	# Подключаем кнопку "Сохранить и выйти"
 	save_and_quit_button.pressed.connect(_on_save_and_quit_pressed)
 	
+	# Проверяем, закончился ли рабочий день
 	if Globals.is_work_day_over():
 		_end_work_day()
 		return
 
-<<<<<<< HEAD
 	# Сцена всегда пустая - создаём клиента заново
 	if _validate_packed_shawu_data():
 		# Клиент уже сделал заказ и ждёт готовую шаурму
 		_spawn_customer_waiting()
-=======
-	if not Globals.last_packed_lavash.is_empty():
-		_spawn_customer_stand_still()
->>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 		_spawn_packed_shawu()
 	elif Globals.last_order.is_empty():
+		# Новый клиент с дефолтным заказом
 		_spawn_customer_with_order()
 	else:
+		# Восстанавливаем клиента с сохранённым заказом
 		_spawn_customer_with_saved_order()
 
-func _on_money_changed(new_amount: float) -> void:
-<<<<<<< HEAD
-	money = new_amount
-	if money_counter:
-		money_counter.text = str(snappedf(money, 0.01)) + "₽"
-	
+func _on_money_changed(_new_amount: float) -> void:
+	_update_money_display()
+
 func _on_time_changed(_formatted_time: String) -> void:
 	_update_time_display()
 	
 func _on_save_and_quit_pressed() -> void:
-	# Сохраняем текущий баланс денег
-	Globals.total_money = money
 	Globals._save_full_progress()
-	print("Прогресс сохранён! Выход в главное меню...")
+	GlobalLogger.info("Прогресс сохранён! Выход в главное меню...")
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 	
 =======
@@ -292,16 +274,9 @@ func _on_delivery_complete() -> void:
 	var tip := base_reward * tip_multiplier
 	var total_reward := base_reward + tip
 	
-	money += total_reward
-	Globals.total_money = money
+	Globals.add_money(total_reward)
+	_update_money_display()
 	
-	# Сохраняем только при важных моментах (переход между сценами, закрытие игры)
-	# НЕ сохраняем при каждой доставке - это вызывает лаги
-	
-	if money_counter:
-		money_counter.text = str(snappedf(money, 0.01)) + "₽"
-	
-	EventBus.money_changed.emit(money)
 	EventBus.shawarma_delivered.emit(total_reward)
 	
 	# Показываем реакцию клиента (await для завершения анимации реакции)
@@ -356,15 +331,9 @@ func _on_delivery_complete() -> void:
 	_spawn_customer_with_order()
 >>>>>>> c33e8377b6fd006e3771648747071697b41d5043
 
-func _update_time_display() -> void:
-	if time_label:
-		time_label.text = Globals.get_formatted_time()
-
-func _end_work_day() -> void:
-	# Сохраняем прогресс перед переходом на экран завершения дня
-	Globals._save_full_progress()
-	# Переход на экран завершения дня
-	get_tree().change_scene_to_file("res://Scenes/EndDay.tscn")
+func _update_money_display() -> void:
+	if money_counter:
+		money_counter.text = str(snappedf(Globals.total_money, 0.01)) + "₽"
 
 # ---------------- ANIMATION ----------------
 func _animate_customer_exit(customer: Customer) -> void:
