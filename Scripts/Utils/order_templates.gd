@@ -24,27 +24,23 @@ enum OrderModifier {
 const ALLOWED_EXCLUSIONS := {
 	ShawarmaType.CLASSIC: ["onion", "pepper", "tomato", "salad"],
 	ShawarmaType.VEGAN: ["onion", "pepper", "tomato", "salad"],
-	ShawarmaType.CHEESE: ["onion", "pepper", "tomato", "salad"]  # Сыр нельзя исключить!
+	ShawarmaType.CHEESE: ["onion", "pepper", "tomato", "salad"]
 }
 
 # Базовые ингредиенты для каждого типа
 const BASE_INGREDIENTS := {
 	ShawarmaType.CLASSIC: ["meat", "tomato", "salad", "onion", "pepper"],
 	ShawarmaType.VEGAN: ["tomato", "salad", "onion", "pepper"],
-	ShawarmaType.CHEESE: ["meat", "tomato", "salad", "onion", "pepper", "cheese"]  # Сыр всегда в сырной!
+	ShawarmaType.CHEESE: ["meat", "tomato", "salad", "onion", "pepper", "cheese"]
 }
 
 # Соусы по умолчанию
 const DEFAULT_SAUCES := ["white_sauce"]
-const SPICY_SAUCES := ["spicy_sauce"]  # Острый соус
-const MILD_SAUCES := ["white_sauce"]  # Белый соус мягче
+const SPICY_SAUCES := ["spicy_sauce"]
+const MILD_SAUCES := ["white_sauce"]
 
-# --- Переменные ---
-var db: Node
+# --- Хардкод рецептов (вместо БД) ---
 var _recipes_cache: Array = []
-var _ingredients_map: Dictionary = {}
-var _sauces_map: Dictionary = {}
-var _ingredients_by_key: Dictionary = {}  # key -> id
 
 # --- Геттеры для внешнего кода ---
 static func get_ShawarmaType() -> Dictionary:
@@ -66,62 +62,24 @@ static func get_OrderModifier() -> Dictionary:
 	}
 
 func _ready() -> void:
-	print("=== ORDER_TEMPLATES: старт")
-	_find_database()
+	_init_recipes_cache()
 
-func _find_database() -> void:
-	# Пробуем разные способы поиска БД
-	db = get_tree().get_first_node_in_group("database")
-	if db:
-		_load_data()
-		return
-	
-	if has_node("/root/Database"):
-		db = get_node("/root/Database")
-		_load_data()
-		return
-	
-	# Пробуем через таймер если не найден
-	print("=== ORDER_TEMPLATES: БД не найден, пробуем через 0.5 сек...")
-	await get_tree().create_timer(0.5).timeout
-	_find_database()
-
-func _load_data() -> void:
-	if not db:
-		push_error("ORDER_TEMPLATES: БД не найдена!")
-		return
-	
-	_recipes_cache = db.get_recipes()
-	
-	print("=== ORDER_TEMPLATES: рецептов: %d" % [_recipes_cache.size()])
-	
-	# Маппинги
-	for ing in db._query_all("SELECT id, name FROM ingredients"):
-		var name: String = ing.get("name", "")
-		var ing_id = ing.get("id", 0)
-		_ingredients_map[ing_id] = name
-		# Обратный маппинг для ключей типа "meat", "onion" и т.д.
-		_ingredients_by_key[name.to_lower()] = ing_id
-	
-	for sau in db._query_all("SELECT id, name FROM sauces"):
-		var name: String = sau.get("name", "")
-		var sau_id = sau.get("id", 0)
-		_sauces_map[sau_id] = name
-		_sauces_map[name.to_lower()] = sau_id
-	
-	print("=== ORDER_TEMPLATES: маппинги готовы")
+func _init_recipes_cache() -> void:
+	_recipes_cache = [
+		{"id": 1, "name": "Куриная шаурма", "name_accusative": "куриную шаурму", "base_meat": "chicken", "ingredients": [{"ingredient_id": 1}], "sauces": [{"sauce_id": 1}]},
+		{"id": 2, "name": "Сырная шаурма", "name_accusative": "сырную шаурму", "base_meat": "meat", "ingredients": [{"ingredient_id": 2}], "sauces": [{"sauce_id": 1}]},
+		{"id": 3, "name": "Острая шаурма", "name_accusative": "острую шаурму", "base_meat": "meat", "ingredients": [{"ingredient_id": 2}], "sauces": [{"sauce_id": 3}]},
+		{"id": 4, "name": "Домашняя шаурма", "name_accusative": "домашнюю шаурму", "base_meat": "chicken", "ingredients": [{"ingredient_id": 1}], "sauces": [{"sauce_id": 2}]},
+		{"id": 5, "name": "Мини шаурма", "name_accusative": "мини шаурму", "base_meat": "chicken", "ingredients": [{"ingredient_id": 1}], "sauces": [{"sauce_id": 1}]}
+	]
 
 # ---------------- Публичные методы ----------------
 func get_random_template() -> Dictionary:
 	return _recipes_cache.pick_random() if not _recipes_cache.is_empty() else _default_template()
 
-# === НОВЫЕ МЕТОДЫ ДЛЯ СИСТЕМЫ ЗАКАЗОВ ===
-
 ## Генерирует заказ на основе типа шаурмы
 func generate_order_by_type(shawarma_type: int, exclusions: Array = [], modifier: int = OrderModifier.NONE) -> Dictionary:
 	var base_ings: Array = BASE_INGREDIENTS.get(shawarma_type, BASE_INGREDIENTS[ShawarmaType.CLASSIC]).duplicate()
-	
-	# Удаляем исключённые ингредиенты
 	for exc in exclusions:
 		if exc in base_ings:
 			base_ings.erase(exc)
@@ -130,9 +88,7 @@ func generate_order_by_type(shawarma_type: int, exclusions: Array = [], modifier
 	for ing_key in base_ings:
 		ingredient_list.append(ing_key)
 	
-	# Применяем модификаторы к ингредиентам
 	var sauce_list: PackedStringArray = []
-	
 	match modifier:
 		OrderModifier.SPICY:
 			sauce_list = SPICY_SAUCES.duplicate()
@@ -141,7 +97,6 @@ func generate_order_by_type(shawarma_type: int, exclusions: Array = [], modifier
 		_:
 			sauce_list = DEFAULT_SAUCES.duplicate()
 	
-	# Определяем имя
 	var type_name: String = SHAWARMA_TYPES.get_shawarma_type_name(shawarma_type)
 	var type_name_acc: String = SHAWARMA_TYPES.get_shawarma_type_name_accusative(shawarma_type)
 	
@@ -165,7 +120,6 @@ func get_allowed_exclusions(shawarma_type: int) -> Array:
 
 ## Получает случайный модификатор заказа
 func get_random_modifier() -> int:
-	# 30% шанс модификатора
 	if randf() < 0.3:
 		var modifiers := [
 			OrderModifier.EXTRA_SAUCE,
@@ -183,17 +137,20 @@ func generate_order(template: Dictionary, exclusions: Array = [], modifier: int 
 	if template.has("ingredients"):
 		for item in template["ingredients"]:
 			var ing_id = item.get("ingredient_id", 0)
-			if _ingredients_map.has(ing_id):
-				ingredients.append(_ingredients_map[ing_id])
+			match ing_id:
+				1: ingredients.append("chicken")
+				2: ingredients.append("meat")
+				3: ingredients.append("tomato")
+				4: ingredients.append("salad")
+				5: ingredients.append("cheese")
+				6: ingredients.append("onion")
+				7: ingredients.append("pepper")
 	
-	# Удаляем исключённые ингредиенты
 	for exc in exclusions:
 		if exc in ingredients:
 			ingredients.erase(exc)
 	
 	var sauces: PackedStringArray = []
-	
-	# Применяем модификаторы к соусам
 	match modifier:
 		OrderModifier.SPICY:
 			sauces = SPICY_SAUCES.duplicate()
@@ -203,8 +160,12 @@ func generate_order(template: Dictionary, exclusions: Array = [], modifier: int 
 			if template.has("sauces"):
 				for item in template["sauces"]:
 					var sau_id = item.get("sauce_id", 0)
-					if _sauces_map.has(sau_id):
-						sauces.append(_sauces_map[sau_id])
+					match sau_id:
+						1: sauces.append("white_sauce")
+						2: sauces.append("red_sauce")
+						3: sauces.append("spicy_sauce")
+				if sauces.is_empty():
+					sauces = DEFAULT_SAUCES.duplicate()
 			else:
 				sauces = DEFAULT_SAUCES.duplicate()
 	

@@ -19,7 +19,6 @@ boot_splash/show_image=false
 
 EventBus="*res://Scripts/Core/event_bus.gd"
 Globals="*res://Scripts/Core/globals.gd"
-Database="*res://Scripts/Core/database.gd"
 Consts="*res://Scripts/Core/consts.gd"
 DebugMenu="*res://Scenes/DebugMenu.tscn"
 GlobalLogger="*res://Scripts/Core/GlobalLogger.gd"
@@ -32,14 +31,7 @@ window/size/mode=2
 window/stretch/mode="canvas_items"
 window/vsync/vsync_mode=0
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
-
 [gui]
 
 theme/custom_font="uid://3ecj6m1sleyy"
 
-[plugin]
-
-primary="res://addons/godot-sqlite/godot_sqlite.gdextension"
